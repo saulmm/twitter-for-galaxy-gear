@@ -1,7 +1,6 @@
 package tweetgear.com.saulmm.views.fragments;
 
 import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -15,6 +14,16 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.Collection;
+
+import tweetgear.com.saulmm.use_cases.GetTweetsUseCase;
+import tweetgear.com.saulmm.use_cases.GetTweetsUseCaseImpl;
+import tweetgear.com.saulmm.executor.JobExecutor;
+import tweetgear.com.saulmm.executor.PostExecutionThread;
+import tweetgear.com.saulmm.executor.ThreadExecutor;
+import tweetgear.com.saulmm.executor.UIThread;
+import tweetgear.com.saulmm.helpers.TwitterHelper;
+import tweetgear.com.saulmm.model.Tweet;
 import tweetgear.com.saulmm.twittergear.R;
 import tweetgear.com.saulmm.utils.Constants;
 
@@ -40,7 +49,7 @@ public class UserFragment extends Fragment {
 
         TextView nameTv             = (TextView) rootView.findViewById (R.id.tw_name);
         TextView usernameTv         = (TextView) rootView.findViewById (R.id.tw_username);
-        Button revokeButton         = (Button) rootView.findViewById (R.id.tw_user_revoke);
+        Button sendTweetsButton         = (Button) rootView.findViewById (R.id.tw_send_tweets);
         ImageView profileImg        = (ImageView) rootView.findViewById (R.id.tw_profile_img);
         ImageView userBackground    = (ImageView) rootView.findViewById (R.id.tw_user_background);
 
@@ -62,7 +71,7 @@ public class UserFragment extends Fragment {
 
         nameTv.setText (preferences.getString("NAME", ""));
         usernameTv.setText ("@"+preferences.getString("USER_NAME", ""));
-        revokeButton.setOnClickListener(onClickListener);
+        sendTweetsButton.setOnClickListener(onClickListener);
 
         return rootView;
     }
@@ -72,16 +81,28 @@ public class UserFragment extends Fragment {
         @Override
         public void onClick(View v) {
 
-            SharedPreferences.Editor prefEditor = preferences.edit();
-            prefEditor.putString("ACCESS_TOKEN", "");
-            prefEditor.putString("ACCESS_TOKEN_SECRET", "");
-            prefEditor.commit();
 
-            FragmentTransaction ft = getFragmentManager().beginTransaction();
-            ft.replace(R.id.content_frame, new LoginFragment());
-            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-            ft.remove(UserFragment.this);
-            ft.commit();
+            ThreadExecutor threadExecutor = JobExecutor.getInstance();
+            PostExecutionThread postExecutionThread = UIThread.getInstance();
+
+            GetTweetsUseCase getTweetsUseCase = new GetTweetsUseCaseImpl(callback, TwitterHelper.getInstance(getActivity().getApplicationContext()).getTwClient());
+            threadExecutor.execute(getTweetsUseCase);
+        }
+    };
+
+    GetTweetsUseCase.Callback callback = new GetTweetsUseCase.Callback() {
+
+        @Override
+        public void onTweetsListLoaded(Collection<Tweet> tweetsCollection) {
+
+            for (Tweet tweet : tweetsCollection) {
+                Log.d("[DEBUG]", "UserFragment onTweetsListLoaded - Tweet: "+tweet.toString());
+            }
+        }
+
+        @Override
+        public void onError(String error) {
+            Log.d("[DEBUG]", "UserFragment onError - ERror: "+error);
         }
     };
 }

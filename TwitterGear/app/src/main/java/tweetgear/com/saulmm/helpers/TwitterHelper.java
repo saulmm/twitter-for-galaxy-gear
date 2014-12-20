@@ -5,15 +5,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.text.TextUtils;
-import android.util.Log;
 
 
-import java.util.ArrayList;
-import java.util.regex.PatternSyntaxException;
 
 import tweetgear.com.saulmm.utils.Constants;
-import tweetgear.com.saulmm.utils.Utils;
-import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
@@ -23,6 +18,18 @@ import twitter4j.auth.RequestToken;
 
 
 public class TwitterHelper {
+
+    private static  TwitterHelper INSTANCE;
+
+    public static TwitterHelper getInstance (Context c) {
+
+        if (INSTANCE == null)
+            INSTANCE = new TwitterHelper(c);
+
+        return  INSTANCE;
+    }
+
+
 
     private boolean userLogged;
     private SharedPreferences preferences;
@@ -36,8 +43,7 @@ public class TwitterHelper {
     private String oauthVerifier;
     private RequestToken requestToken;
 
-
-    public TwitterHelper(Context context) {
+    private TwitterHelper(Context context) {
 
         preferences = context.getSharedPreferences(
                 Constants.PREFS, Context.MODE_PRIVATE);
@@ -57,6 +63,9 @@ public class TwitterHelper {
         }
     }
 
+    public Twitter getTwClient() {
+        return twClient;
+    }
 
     public void initTwitter() {
 
@@ -75,8 +84,6 @@ public class TwitterHelper {
 
 
     public void requestTwitterTimeLine(TwitterOperationListener twitterListener) {
-
-        new TwitterTimeLineTask(twitterListener).execute();
     }
 
 
@@ -127,85 +134,6 @@ public class TwitterHelper {
 
 
 
-    private class TwitterTimeLineTask extends AsyncTask<Void, Void, ArrayList<Status>> {
-
-        private String errorMessage;
-        private final TwitterOperationListener tmListener;
-
-
-        public TwitterTimeLineTask(TwitterOperationListener tmListener) {
-
-            this.tmListener = tmListener;
-        }
-
-        @Override
-        protected ArrayList<twitter4j.Status> doInBackground(Void... params) {
-            ArrayList<twitter4j.Status> statuses;
-            errorMessage = "";
-
-            Log.i("[INFO] SendTimeLineTask - doInBackground",
-                    "Getting the timeline");
-
-            try {
-
-                statuses = (ArrayList<twitter4j.Status>) twClient.getHomeTimeline();
-                return statuses;
-
-            } catch (TwitterException e) {
-
-                if (e.getMessage().equals("Network is unreachable")) {
-                    errorMessage = "Network problem";
-                }
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(ArrayList<twitter4j.Status> statuses) {
-
-            super.onPostExecute(statuses);
-
-            if (errorMessage.equals("")) {
-                ArrayList<String> tweets = new ArrayList<String>(statuses.size());
-
-                for (twitter4j.Status ts : statuses) {
-
-                    long tweetID = ts.getId();
-                    String twText;
-                    String twTime = Utils.getTimeDiference(ts.getCreatedAt());
-                    String twUsername = ts.getUser().getName();
-
-                    try {
-
-                        twText = Utils.removeUrl(ts.getText());
-
-                    } catch (PatternSyntaxException e) {
-                        twText = ts.getText();
-                    }
-
-                    boolean isRTbyMe = ts.isRetweetedByMe();
-                    boolean isFVbyMe = ts.isFavorited();
-
-                    String tweet = twUsername + Constants.TWEET_SEPARATOR +
-                            twText.replace("\n", " ") + Constants.TWEET_SEPARATOR +
-                            tweetID + Constants.TWEET_SEPARATOR +
-                            isFVbyMe + Constants.TWEET_SEPARATOR +
-                            isRTbyMe + Constants.TWEET_SEPARATOR +
-                            twTime.replace("-", "") + Constants.TWEET_SEPARATOR +
-                            System.currentTimeMillis();
-
-                    tweets.add(tweet);
-                }
-
-                tmListener.onTimeLineReceived(tweets);
-
-            } else {
-
-                tmListener.onTwitterFail(errorMessage);
-            }
-        }
-    }
 
     private class TwitterOperationTask extends AsyncTask<Boolean, Void, Boolean> {
         private final String tweetID;
