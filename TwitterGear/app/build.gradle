@@ -25,6 +25,6 @@ dependencies {
     compile 'de.hdodenhof:circleimageview:1.2.0'
     compile files('libs/twitter4j-core-4.0.2.jar')
     compile 'com.squareup.picasso:picasso:2.3.3'
-
-
+    compile files('libs/richnotification-v1.0.0.jar')
+    compile files('libs/sdk-v1.0.0.jar')
 }
