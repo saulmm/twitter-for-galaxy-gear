@@ -5,7 +5,7 @@ public interface UserPresenter extends Presenter {
 
     void loadUserData ();
 
-    void sendTweets ();
+    void requestTweets();
 
     void sendTweetsButtonClicked();
 }
