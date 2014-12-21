@@ -12,10 +12,15 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.samsung.android.sdk.richnotification.SrnRichNotificationManager;
 import com.squareup.picasso.Picasso;
 
 import java.util.Collection;
+import java.util.UUID;
 
+import tweetgear.com.saulmm.examples.SmallHeader;
+import tweetgear.com.saulmm.presenter.UserPresenter;
+import tweetgear.com.saulmm.presenter.UserPresenterImpl;
 import tweetgear.com.saulmm.use_cases.GetTweetsUseCase;
 import tweetgear.com.saulmm.use_cases.GetTweetsUseCaseImpl;
 import tweetgear.com.saulmm.executor.JobExecutor;
@@ -26,83 +31,101 @@ import tweetgear.com.saulmm.helpers.TwitterHelper;
 import tweetgear.com.saulmm.model.Tweet;
 import tweetgear.com.saulmm.twittergear.R;
 import tweetgear.com.saulmm.utils.Constants;
+import tweetgear.com.saulmm.views.view.UserView;
 
 
-public class UserFragment extends Fragment {
+public class UserFragment extends Fragment implements UserView {
 
-    private SharedPreferences preferences;
+//    private SrnRichNotificationManager mRichNotificationManager;
+
+    private ImageView profileImg;
+    private ImageView userBackground;
+    private TextView nameTv;
+    private TextView usernameTv;
+
+    private UserPresenter userPresenter;
+    private Button sendTweetsButton;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        preferences = getActivity().getSharedPreferences(
-            Constants.PREFS,
-            Context.MODE_PRIVATE);
-
         View rootView = initUI(inflater);
+        userPresenter = new UserPresenterImpl(this);
         return rootView;
+
+        //        mRichNotificationManager = new SrnRichNotificationManager(getActivity().getApplicationContext());
+    }
+
+    @Override
+    public void onResume() {
+
+        super.onResume();
+        userPresenter.onResume();
+
+//        mRichNotificationManager.start();
+//        mRichNotificationManager.registerRichNotificationListener(this);
+    }
+
+    @Override
+    public void onPause() {
+
+        super.onPause();
+        userPresenter.onPause();
+
+//        mRichNotificationManager.unregisterRichNotificationListener(this);
+//        mRichNotificationManager.stop();
     }
 
     private View initUI(LayoutInflater inflater) {
+
         View rootView = inflater.inflate(R.layout.fragment_user, null);
 
-        TextView nameTv             = (TextView) rootView.findViewById (R.id.tw_name);
-        TextView usernameTv         = (TextView) rootView.findViewById (R.id.tw_username);
-        Button sendTweetsButton         = (Button) rootView.findViewById (R.id.tw_send_tweets);
-        ImageView profileImg        = (ImageView) rootView.findViewById (R.id.tw_profile_img);
-        ImageView userBackground    = (ImageView) rootView.findViewById (R.id.tw_user_background);
+        nameTv              = (TextView) rootView.findViewById (R.id.tw_name);
+        usernameTv          = (TextView) rootView.findViewById (R.id.tw_username);
+        sendTweetsButton    = (Button) rootView.findViewById (R.id.tw_send_tweets);
+        profileImg          = (ImageView) rootView.findViewById (R.id.tw_profile_img);
+        userBackground      = (ImageView) rootView.findViewById (R.id.tw_user_background);
 
-        Picasso.with(getActivity())
-            .load(preferences.getString("IMAGE_URL", ""))
-            .placeholder(R.drawable.placeholder_user)
-            .into(profileImg);
-
-        String backgroundURL = preferences.getString("BACKGROUND_IMG", "");
-
-        if (!backgroundURL.equals("")) {
-
-            Picasso.with(getActivity())
-                .load(backgroundURL)
-                .placeholder(R.drawable.background)
-                .error(R.drawable.background)
-                .into(userBackground);
-        }
-
-        nameTv.setText (preferences.getString("NAME", ""));
-        usernameTv.setText ("@"+preferences.getString("USER_NAME", ""));
-        sendTweetsButton.setOnClickListener(onClickListener);
+        sendTweetsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                userPresenter.sendTweetsButtonClicked();
+            }
+        });
 
         return rootView;
     }
 
 
-    private final View.OnClickListener onClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
+    @Override
+    public void setNameAndUserName(String name, String username) {
 
+        nameTv.setText (name);
+        usernameTv.setText (username);
+    }
 
-            ThreadExecutor threadExecutor = JobExecutor.getInstance();
-            PostExecutionThread postExecutionThread = UIThread.getInstance();
+    @Override
+    public void loadBackgroundImage(String url) {
 
-            GetTweetsUseCase getTweetsUseCase = new GetTweetsUseCaseImpl(callback, TwitterHelper.getInstance(getActivity().getApplicationContext()).getTwClient());
-            threadExecutor.execute(getTweetsUseCase);
-        }
-    };
+        Picasso.with(getActivity())
+            .load(url)
+            .placeholder(R.drawable.background)
+            .into(userBackground);
+    }
 
-    GetTweetsUseCase.Callback callback = new GetTweetsUseCase.Callback() {
+    @Override
+    public void loadUserImage(String url) {
 
-        @Override
-        public void onTweetsListLoaded(Collection<Tweet> tweetsCollection) {
+        Picasso.with(getActivity())
+            .load(url)
+            .placeholder(R.drawable.placeholder_user)
+            .error(R.drawable.background)
+            .into(profileImg);
+    }
 
-            for (Tweet tweet : tweetsCollection) {
-                Log.d("[DEBUG]", "UserFragment onTweetsListLoaded - Tweet: "+tweet.toString());
-            }
-        }
-
-        @Override
-        public void onError(String error) {
-            Log.d("[DEBUG]", "UserFragment onError - ERror: "+error);
-        }
-    };
+    @Override
+    public Context getContext() {
+        return getActivity();
+    }
 }
