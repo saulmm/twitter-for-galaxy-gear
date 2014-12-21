@@ -46,9 +46,6 @@ public class LoginFragment extends Fragment implements TwitterLoginListener {
 
     private TwitterHelper twHelper;
 
-    public void setCtx(Context ctx) {
-        this.ctx = ctx;
-    }
 
     @Override
     public void onSaveInstanceState(Bundle outState) { }
@@ -58,7 +55,7 @@ public class LoginFragment extends Fragment implements TwitterLoginListener {
 
         View rootView = initUI(inflater);
 
-        twHelper = new TwitterHelper(getActivity());
+        twHelper = TwitterHelper.getInstance(getActivity().getApplicationContext());
         twHelper.setLoginListener(this);
         twHelper.initTwitter();
 
