@@ -5,9 +5,20 @@ package tweetgear.com.saulmm.model;
  */
 public class Tweet {
 
-    private String username;
     private String text;
-    private String setTweetTime;
+    private String username;
+    private String time;
+
+    private int retweets;
+    private int favorites;
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public String getTime() {
+        return time;
+    }
 
     public void setUsername(String username) {
         this.username = username;
@@ -17,20 +28,28 @@ public class Tweet {
         this.text = text;
     }
 
-    public void setSetTweetTime(String setTweetTime) {
-        this.setTweetTime = setTweetTime;
+    public void setRetweets(int retweets) {
+        this.retweets = retweets;
+    }
+
+    public void setFavorites(int favorites) {
+        this.favorites = favorites;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public int getRetweets() {
+        return retweets;
     }
 
     public String getText() {
         return text;
     }
 
-    @Override
-    public String toString() {
-        return "Tweet{" +
-                "username='" + username + '\'' +
-                ", text='" + text + '\'' +
-                ", setTweetTime='" + setTweetTime + '\'' +
-                '}';
+    public int getFavorites() {
+        return favorites;
     }
+
 }
