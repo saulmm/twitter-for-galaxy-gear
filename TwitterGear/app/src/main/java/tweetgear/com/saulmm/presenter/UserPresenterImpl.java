@@ -102,7 +102,7 @@ public class UserPresenterImpl implements UserPresenter {
     @Override
     public void sendTweetsButtonClicked() {
 
-        sendTweets(); 
+        sendTweets();
 
     }
 }

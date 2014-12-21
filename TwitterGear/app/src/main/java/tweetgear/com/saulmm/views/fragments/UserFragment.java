@@ -36,8 +36,7 @@ import tweetgear.com.saulmm.views.view.UserView;
 
 public class UserFragment extends Fragment implements UserView {
 
-    private SharedPreferences preferences;
-    private SrnRichNotificationManager mRichNotificationManager;
+//    private SrnRichNotificationManager mRichNotificationManager;
 
     private ImageView profileImg;
     private ImageView userBackground;
