@@ -3,6 +3,8 @@
     package="tweetgear.com.saulmm.twittergear" >
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="com.samsung.wmanager.ENABLE_NOTIFICATION" />
+    <uses-permission android:name="com.samsung.android.providers.context.permission.WRITE_USE_APP_FEATURE_SURVEY" />
 
     <application
         android:allowBackup="true"
