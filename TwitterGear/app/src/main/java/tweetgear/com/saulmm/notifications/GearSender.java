@@ -29,8 +29,7 @@ public class GearSender implements NotificationSender {
         if (tweet == null)
             throw new IllegalArgumentException("Tweet cannot be null");
 
-        SmallHeader header = new SmallHeader(context);
-        mRichNotificationManager.notify(header.createRichNotification());
+        mRichNotificationManager.notify(GearNotificationsHelper.createTweetNotification(context, tweet));
 
     }
 
