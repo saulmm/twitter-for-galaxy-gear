@@ -58,9 +58,10 @@ public class GetTweetsUseCaseImpl implements GetTweetsUseCase {
             for (Status status : twitterTimeline) {
 
                 Tweet tweet = new Tweet();
-                tweet.setSetTweetTime(Utils.getTimeDiference(status.getCreatedAt()));
+                tweet.setTime(Utils.getTimeDiference(status.getCreatedAt()));
                 tweet.setUsername(status.getUser().getName());
                 tweet.setText(status.getText());
+                tweet.setFavorites(status.getFavoriteCount());
 
                 tweets.add(tweet);
             }
