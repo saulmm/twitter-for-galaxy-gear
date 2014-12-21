@@ -2,9 +2,7 @@ package tweetgear.com.saulmm.views.fragments;
 
 import android.app.Fragment;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,31 +10,16 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.samsung.android.sdk.richnotification.SrnRichNotificationManager;
 import com.squareup.picasso.Picasso;
 
-import java.util.Collection;
-import java.util.UUID;
-
-import tweetgear.com.saulmm.examples.SmallHeader;
 import tweetgear.com.saulmm.presenter.UserPresenter;
 import tweetgear.com.saulmm.presenter.UserPresenterImpl;
-import tweetgear.com.saulmm.use_cases.GetTweetsUseCase;
-import tweetgear.com.saulmm.use_cases.GetTweetsUseCaseImpl;
-import tweetgear.com.saulmm.executor.JobExecutor;
-import tweetgear.com.saulmm.executor.PostExecutionThread;
-import tweetgear.com.saulmm.executor.ThreadExecutor;
-import tweetgear.com.saulmm.executor.UIThread;
-import tweetgear.com.saulmm.helpers.TwitterHelper;
-import tweetgear.com.saulmm.model.Tweet;
 import tweetgear.com.saulmm.twittergear.R;
-import tweetgear.com.saulmm.utils.Constants;
 import tweetgear.com.saulmm.views.view.UserView;
 
 
 public class UserFragment extends Fragment implements UserView {
 
-//    private SrnRichNotificationManager mRichNotificationManager;
 
     private ImageView profileImg;
     private ImageView userBackground;
@@ -53,8 +36,6 @@ public class UserFragment extends Fragment implements UserView {
         View rootView = initUI(inflater);
         userPresenter = new UserPresenterImpl(this);
         return rootView;
-
-        //        mRichNotificationManager = new SrnRichNotificationManager(getActivity().getApplicationContext());
     }
 
     @Override
@@ -74,7 +55,6 @@ public class UserFragment extends Fragment implements UserView {
         userPresenter.onPause();
 
 //        mRichNotificationManager.unregisterRichNotificationListener(this);
-//        mRichNotificationManager.stop();
     }
 
     private View initUI(LayoutInflater inflater) {
