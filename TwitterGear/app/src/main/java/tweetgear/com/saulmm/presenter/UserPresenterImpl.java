@@ -13,6 +13,8 @@ import tweetgear.com.saulmm.executor.ThreadExecutor;
 import tweetgear.com.saulmm.executor.UIThread;
 import tweetgear.com.saulmm.helpers.TwitterHelper;
 import tweetgear.com.saulmm.model.Tweet;
+import tweetgear.com.saulmm.notifications.GearSender;
+import tweetgear.com.saulmm.notifications.NotificationSender;
 import tweetgear.com.saulmm.use_cases.GetTweetsUseCase;
 import tweetgear.com.saulmm.use_cases.GetTweetsUseCaseImpl;
 import tweetgear.com.saulmm.utils.Constants;
@@ -25,7 +27,7 @@ public class UserPresenterImpl implements UserPresenter {
 
     private final ThreadExecutor threadExecutor;
     private final PostExecutionThread postExecutionThread;
-
+    private final NotificationSender wearableSender;
 
     public UserPresenterImpl(UserView userView) {
 
@@ -36,14 +38,23 @@ public class UserPresenterImpl implements UserPresenter {
         this.threadExecutor = JobExecutor.getInstance();
         this.postExecutionThread = UIThread.getInstance();
 
+        // Abstraction that can be replaced by a AndroidWearSender in example
+        this.wearableSender = new GearSender(userView.getContext().getApplicationContext());
+
         loadUserData();
     }
 
     @Override
-    public void onResume() {}
+    public void onResume() {
+
+        wearableSender.onResume();
+    }
 
     @Override
-    public void onPause() {}
+    public void onPause() {
+
+        wearableSender.onPause();
+    }
 
     @Override
     public void loadUserData() {
@@ -70,7 +81,7 @@ public class UserPresenterImpl implements UserPresenter {
     }
 
     @Override
-    public void sendTweets() {
+    public void requestTweets() {
 
         Twitter twitterClient = TwitterHelper.getInstance(userView.getContext())
             .getTwClient();
@@ -88,7 +99,9 @@ public class UserPresenterImpl implements UserPresenter {
         public void onTweetsListLoaded(Collection<Tweet> tweetsCollection) {
 
             for (Tweet tweet : tweetsCollection) {
+
                 Log.d("[DEBUG]", "UserPresenterImpl onTweetsListLoaded - Tweet: " + tweet.toString());
+                wearableSender.sendTweetNotification(tweet);
             }
         }
 
@@ -102,7 +115,7 @@ public class UserPresenterImpl implements UserPresenter {
     @Override
     public void sendTweetsButtonClicked() {
 
-        sendTweets();
+        requestTweets();
 
     }
 }
