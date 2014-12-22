@@ -32,8 +32,8 @@ public class GearNotificationsHelper {
         SrnImageAsset starIcon = getSrnImageAsset(context, "retweetIcon", R.drawable.ic_retweet);
         SrnImageAsset twitterIcon = getSrnImageAsset(context, "twitter_icon", R.drawable.ic_twitter);
 
-        smallSecondaryTemplate.setSmallIcon1(retweetIcon, "\t"+tweet.getFavorites());
-        smallSecondaryTemplate.setSmallIcon2(starIcon, "\t"+tweet.getRetweets());
+        smallSecondaryTemplate.setSmallIcon1(retweetIcon, "  " + tweet.getFavorites());
+        smallSecondaryTemplate.setSmallIcon2(starIcon, "  " + tweet.getRetweets());
 
         SrnRichNotification notification = new SrnRichNotification(context);
         notification.setAlertType(SrnRichNotification.AlertType.SILENCE);
