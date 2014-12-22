@@ -20,7 +20,6 @@ import tweetgear.com.saulmm.views.view.UserView;
 
 public class UserFragment extends Fragment implements UserView {
 
-
     private ImageView profileImg;
     private ImageView userBackground;
     private TextView nameTv;
@@ -43,9 +42,6 @@ public class UserFragment extends Fragment implements UserView {
 
         super.onResume();
         userPresenter.onResume();
-
-//        mRichNotificationManager.start();
-//        mRichNotificationManager.registerRichNotificationListener(this);
     }
 
     @Override
@@ -53,8 +49,6 @@ public class UserFragment extends Fragment implements UserView {
 
         super.onPause();
         userPresenter.onPause();
-
-//        mRichNotificationManager.unregisterRichNotificationListener(this);
     }
 
     private View initUI(LayoutInflater inflater) {

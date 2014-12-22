@@ -15,9 +15,6 @@ import com.samsung.android.sdk.richnotification.templates.SrnStandardTemplate;
 import tweetgear.com.saulmm.model.Tweet;
 import tweetgear.com.saulmm.twittergear.R;
 
-/**
- * Created by saulmm on 21/12/14.
- */
 public class GearNotificationsHelper {
 
     public static SrnRichNotification createTweetNotification (Context context, Tweet tweet) {
@@ -43,7 +40,6 @@ public class GearNotificationsHelper {
         notification.setTitle("Twitter");
         return notification;
     }
-
 
     private static SrnImageAsset getSrnImageAsset (Context context, String name, int drawableRes) {
 
