@@ -23,22 +23,31 @@ public class GearNotificationsHelper {
     public static SrnRichNotification createTweetNotification (Context context, Tweet tweet) {
 
         SrnStandardTemplate smallHeaderTemplate = new SrnStandardTemplate(SrnStandardTemplate.HeaderSizeType.SMALL);
-        smallHeaderTemplate.setSubHeader("<b> Tweet </b>");
+        smallHeaderTemplate.setBody("<b>@"+tweet.getUsername()+"<b>");
 
         SrnStandardSecondaryTemplate smallSecondaryTemplate = new SrnStandardSecondaryTemplate();
-        smallSecondaryTemplate.setTitle("<b>"+tweet.getUsername()+"<b>");
-        smallSecondaryTemplate.setSubHeader("<b>"+tweet+"<b>");
         smallSecondaryTemplate.setBody(tweet.getText());
 
-        Bitmap commentBM = BitmapFactory.decodeResource(context.getResources(),R.drawable.star);
-        SrnImageAsset commentIcon = new SrnImageAsset(context, "comment_icon", commentBM);
-        smallSecondaryTemplate.setSmallIcon1(commentIcon, ""+tweet.getFavorites());
+        SrnImageAsset retweetIcon = getSrnImageAsset(context, "favoriteIcon", R.drawable.star);
+        SrnImageAsset starIcon = getSrnImageAsset(context, "retweetIcon", R.drawable.ic_retweet);
+        SrnImageAsset twitterIcon = getSrnImageAsset(context, "twitter_icon", R.drawable.ic_twitter);
+
+        smallSecondaryTemplate.setSmallIcon1(retweetIcon, "\t"+tweet.getFavorites());
+        smallSecondaryTemplate.setSmallIcon2(starIcon, "\t"+tweet.getRetweets());
 
         SrnRichNotification notification = new SrnRichNotification(context);
         notification.setAlertType(SrnRichNotification.AlertType.SILENCE);
         notification.setPrimaryTemplate(smallHeaderTemplate);
         notification.setSecondaryTemplate(smallSecondaryTemplate);
-
+        notification.setIcon(twitterIcon);
+        notification.setTitle("Twitter");
         return notification;
+    }
+
+
+    private static SrnImageAsset getSrnImageAsset (Context context, String name, int drawableRes) {
+
+        Bitmap bm = BitmapFactory.decodeResource(context.getResources(), drawableRes);
+        return new SrnImageAsset(context, name, bm);
     }
 }
