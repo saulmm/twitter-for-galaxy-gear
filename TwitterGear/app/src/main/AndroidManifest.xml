@@ -40,7 +40,7 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name="tweetgear.com.saulmm.Launcter">
+        <activity android:name="tweetgear.com.saulmm.views.activities.TestLauncher">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
