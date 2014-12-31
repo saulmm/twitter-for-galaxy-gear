@@ -1,14 +1,11 @@
-package tweetgear.com.saulmm.notifications;
+package tweetgear.com.saulmm.wearables;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.text.format.Time;
 
 import com.samsung.android.sdk.richnotification.SrnImageAsset;
 import com.samsung.android.sdk.richnotification.SrnRichNotification;
-import com.samsung.android.sdk.richnotification.templates.SrnSecondaryTemplate;
 import com.samsung.android.sdk.richnotification.templates.SrnStandardSecondaryTemplate;
 import com.samsung.android.sdk.richnotification.templates.SrnStandardTemplate;
 

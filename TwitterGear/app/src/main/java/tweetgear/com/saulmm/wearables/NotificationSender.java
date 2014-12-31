@@ -1,4 +1,4 @@
-package tweetgear.com.saulmm.notifications;
+package tweetgear.com.saulmm.wearables;
 
 import tweetgear.com.saulmm.model.Tweet;
 
