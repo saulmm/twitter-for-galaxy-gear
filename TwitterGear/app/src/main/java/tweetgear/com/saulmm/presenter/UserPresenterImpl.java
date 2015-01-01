@@ -13,6 +13,7 @@ import tweetgear.com.saulmm.executor.ThreadExecutor;
 import tweetgear.com.saulmm.executor.UIThread;
 import tweetgear.com.saulmm.helpers.TwitterHelper;
 import tweetgear.com.saulmm.model.Tweet;
+import tweetgear.com.saulmm.wearables.CommService;
 import tweetgear.com.saulmm.wearables.GearSender;
 import tweetgear.com.saulmm.wearables.NotificationSender;
 import tweetgear.com.saulmm.use_cases.GetTweetsUseCase;
@@ -87,7 +88,7 @@ public class UserPresenterImpl implements UserPresenter {
             .getTwClient();
 
         GetTweetsUseCase getTweetsUseCase = new GetTweetsUseCaseImpl(
-            receiveTweetsCallback, twitterClient);
+           twitterClient, receiveTweetsCallback);
 
         threadExecutor.execute(getTweetsUseCase);
     }

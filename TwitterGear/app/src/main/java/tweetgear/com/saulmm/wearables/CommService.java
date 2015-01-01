@@ -36,6 +36,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
+import java.util.Collection;
 import java.util.HashMap;
 
 import javax.security.cert.X509Certificate;
@@ -59,6 +60,12 @@ import com.samsung.android.sdk.accessory.SAAuthenticationToken;
 import com.samsung.android.sdk.accessory.SAPeerAgent;
 import com.samsung.android.sdk.accessory.SASocket;
 
+import tweetgear.com.saulmm.executor.JobExecutor;
+import tweetgear.com.saulmm.model.Tweet;
+import tweetgear.com.saulmm.use_cases.GetTweetsUseCase;
+import tweetgear.com.saulmm.use_cases.GetTweetsUseCaseImpl;
+import twitter4j.Twitter;
+
 public class CommService extends SAAgent {
     public static final String TAG = "HelloAccessoryProviderService";
 
@@ -69,6 +76,13 @@ public class CommService extends SAAgent {
     HashMap<Integer, CommServiceProviderConnection> mConnectionsMap = null;
 
     private final IBinder mBinder = new LocalBinder();
+
+    private Twitter twitterClient;
+
+    public void setTwitterClient(Twitter twitterClient) {
+
+        this.twitterClient = twitterClient;
+    }
 
     public class LocalBinder extends Binder {
 
@@ -101,54 +115,95 @@ public class CommService extends SAAgent {
         @Override
         public void onReceive(int channelId, byte[] data) {
 
-            final String message = ""+
-                    "Padre lol-.__6 min-.__@_saulmm-.__This is an awesome sample tweet by a @dummie user, the @dummie user is talking about #things of the real life"+"|_|"+
-                    "Yoko Ono-.__1 min-.__@_yoko-.__The split() method is used to split a string into an array of substrings, and returns the new array.Tip: If an empty string () is used as the separator, the string is split between each character."+"|_|"+
-                    "TechChrunch-.__38 min-.__@TechCrunch-.__We don’t have to live with income inequality if we can design the right economic structures to ultimately reverse it http://tcrn.ch/1xvH4tu "+
-                    "Saul M-.__6 min-.__@_saulmm-.__This is an awesome sample tweet by a @dummie user, the @dummie user is talking about #things of the real life"+"|_|"+
-                    "Yoko Ono-.__1 min-.__@_yoko-.__The split() method is used to split a string into an array of substrings, and returns the new array.Tip: If an empty string () is used as the separator, the string is split between each character."+"|_|"+
-                    "TechChrunch-.__38 min-.__@TechCrunch-.__We don’t have to live with income inequality if we can design the right economic structures to ultimately reverse it http://tcrn.ch/1xvH4tu "+
-                    "Saul M-.__6 min-.__@_saulmm-.__This is an awesome sample tweet by a @dummie user, the @dummie user is talking about #things of the real life"+"|_|"+
-                    "Yoko Ono-.__1 min-.__@_yoko-.__The split() method is used to split a string into an array of substrings, and returns the new array.Tip: If an empty string () is used as the separator, the string is split between each character."+"|_|"+
-                    "TechChrunch-.__38 min-.__@TechCrunch-.__We don’t have to live with income inequality if we can design the right economic structures to ultimately reverse it http://tcrn.ch/1xvH4tu "+
-                    "Saul M-.__6 min-.__@_saulmm-.__This is an awesome sample tweet by a @dummie user, the @dummie user is talking about #things of the real life"+"|_|"+
-                    "Yoko Ono-.__1 min-.__@_yoko-.__The split() method is used to split a string into an array of substrings, and returns the new array.Tip: If an empty string () is used as the separator, the string is split between each character."+"|_|"+
-                    "TechChrunch-.__38 min-.__@TechCrunch-.__We don’t have to live with income inequality if we can design the right economic structures to ultimately reverse it http://tcrn.ch/1xvH4tu "+
-                    "Saul M-.__6 min-.__@_saulmm-.__This is an awesome sample tweet by a @dummie user, the @dummie user is talking about #things of the real life"+"|_|"+
-                    "Yoko Ono-.__1 min-.__@_yoko-.__The split() method is used to split a string into an array of substrings, and returns the new array.Tip: If an empty string () is used as the separator, the string is split between each character."+"|_|"+
-                    "TechChrunch-.__38 min-.__@TechCrunch-.__We don’t have to live with income inequality if we can design the right economic structures to ultimately reverse it http://tcrn.ch/1xvH4tu "+
-                    "Saul M-.__6 min-.__@_saulmm-.__This is an awesome sample tweet by a @dummie user, the @dummie user is talking about #things of the real life"+"|_|"+
-                    "Yoko Ono-.__1 min-.__@_yoko-.__The split() method is used to split a string into an array of substrings, and returns the new array.Tip: If an empty string () is used as the separator, the string is split between each character."+"|_|"+
-                    "TechChrunch-.__38 min-.__@TechCrunch-.__We don’t have to live with income inequality if we can design the right economic structures to ultimately reverse it http://tcrn.ch/1xvH4tu "+
-                    "Saul M-.__6 min-.__@_saulmm-.__This is an awesome sample tweet by a @dummie user, the @dummie user is talking about #things of the real life"+"|_|"+
-                    "Yoko Ono-.__1 min-.__@_yoko-.__The split() method is used to split a string into an array of substrings, and returns the new array.Tip: If an empty string () is used as the separator, the string is split between each character."+"|_|"+
-                    "TechChrunch-.__38 min-.__@TechCrunch-.__We don’t have to live with income inequality if we can design the right economic structures to ultimately reverse it http://tcrn.ch/1xvH4tu ";
+            final String[] tweets = {""};
 
 
-            final CommServiceProviderConnection uHandler = mConnectionsMap.get(
-                    Integer.parseInt(String.valueOf(mConnectionId)));
+            GetTweetsUseCase getTweetsUseCase = new GetTweetsUseCaseImpl(twitterClient, new GetTweetsUseCase.Callback() {
+                @Override
+                public void onTweetsListLoaded(Collection<Tweet> tweetsCollection) {
 
-            if(uHandler == null) {
+                    String fieldSeparator = "-.__";
+                    String tweetSeparator = "|_|";
 
-                Log.e("[ERROR]", "HelloAccessoryProviderConnection onReceive " +
-                        "- Connection Handler null");
+                    for (Tweet tweet : tweetsCollection) {
 
-                return;
-            }
+                        tweets[0] += tweet.getUsername();
+                        tweets[0] += fieldSeparator;
+                        tweets[0] += tweet.getTime();
+                        tweets[0] += fieldSeparator;
+                        tweets[0] += "@"+tweet.getUsername();
+                        tweets[0] += fieldSeparator;
+                        tweets[0] += tweet.getText();
 
-            // Send the message
-            new Thread(new Runnable() {
+                        tweets[0] += tweetSeparator;
 
-                public void run() {
-
-                    try {
-                        uHandler.send(HELLOACCESSORY_CHANNEL_ID, message.getBytes());
-
-                    } catch (IOException e) {
-                        e.printStackTrace();
                     }
+
+                    final CommServiceProviderConnection uHandler = mConnectionsMap.get(
+                            Integer.parseInt(String.valueOf(mConnectionId)));
+
+                    if(uHandler == null) {
+
+                        Log.e("[ERROR]", "HelloAccessoryProviderConnection onReceive " +
+                                "- Connection Handler null");
+
+                        return;
+                    }
+
+                    // Send the message
+                    new Thread(new Runnable() {
+
+                        public void run() {
+
+                            try {
+                                uHandler.send(HELLOACCESSORY_CHANNEL_ID, tweets[0].getBytes());
+
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }).start();
+
+
                 }
-            }).start();
+
+                @Override
+                public void onError(String error) {
+
+                    Log.d("[DEBUG]", "CommServiceProviderConnection onError - Error: "+error);
+                }
+            });
+
+            JobExecutor.getInstance().execute(getTweetsUseCase);
+
+
+            final String message = tweets[0];
+
+//            final String message = ""+
+//                    "Padre lol-.__6 min-.__@_saulmm-.__This is an awesome sample tweet by a @dummie user, the @dummie user is talking about #things of the real life"+"|_|"+
+//                    "Yoko Ono-.__1 min-.__@_yoko-.__The split() method is used to split a string into an array of substrings, and returns the new array.Tip: If an empty string () is used as the separator, the string is split between each character."+"|_|"+
+//                    "TechChrunch-.__38 min-.__@TechCrunch-.__We don’t have to live with income inequality if we can design the right economic structures to ultimately reverse it http://tcrn.ch/1xvH4tu "+
+//                    "Saul M-.__6 min-.__@_saulmm-.__This is an awesome sample tweet by a @dummie user, the @dummie user is talking about #things of the real life"+"|_|"+
+//                    "Yoko Ono-.__1 min-.__@_yoko-.__The split() method is used to split a string into an array of substrings, and returns the new array.Tip: If an empty string () is used as the separator, the string is split between each character."+"|_|"+
+//                    "TechChrunch-.__38 min-.__@TechCrunch-.__We don’t have to live with income inequality if we can design the right economic structures to ultimately reverse it http://tcrn.ch/1xvH4tu "+
+//                    "Saul M-.__6 min-.__@_saulmm-.__This is an awesome sample tweet by a @dummie user, the @dummie user is talking about #things of the real life"+"|_|"+
+//                    "Yoko Ono-.__1 min-.__@_yoko-.__The split() method is used to split a string into an array of substrings, and returns the new array.Tip: If an empty string () is used as the separator, the string is split between each character."+"|_|"+
+//                    "TechChrunch-.__38 min-.__@TechCrunch-.__We don’t have to live with income inequality if we can design the right economic structures to ultimately reverse it http://tcrn.ch/1xvH4tu "+
+//                    "Saul M-.__6 min-.__@_saulmm-.__This is an awesome sample tweet by a @dummie user, the @dummie user is talking about #things of the real life"+"|_|"+
+//                    "Yoko Ono-.__1 min-.__@_yoko-.__The split() method is used to split a string into an array of substrings, and returns the new array.Tip: If an empty string () is used as the separator, the string is split between each character."+"|_|"+
+//                    "TechChrunch-.__38 min-.__@TechCrunch-.__We don’t have to live with income inequality if we can design the right economic structures to ultimately reverse it http://tcrn.ch/1xvH4tu "+
+//                    "Saul M-.__6 min-.__@_saulmm-.__This is an awesome sample tweet by a @dummie user, the @dummie user is talking about #things of the real life"+"|_|"+
+//                    "Yoko Ono-.__1 min-.__@_yoko-.__The split() method is used to split a string into an array of substrings, and returns the new array.Tip: If an empty string () is used as the separator, the string is split between each character."+"|_|"+
+//                    "TechChrunch-.__38 min-.__@TechCrunch-.__We don’t have to live with income inequality if we can design the right economic structures to ultimately reverse it http://tcrn.ch/1xvH4tu "+
+//                    "Saul M-.__6 min-.__@_saulmm-.__This is an awesome sample tweet by a @dummie user, the @dummie user is talking about #things of the real life"+"|_|"+
+//                    "Yoko Ono-.__1 min-.__@_yoko-.__The split() method is used to split a string into an array of substrings, and returns the new array.Tip: If an empty string () is used as the separator, the string is split between each character."+"|_|"+
+//                    "TechChrunch-.__38 min-.__@TechCrunch-.__We don’t have to live with income inequality if we can design the right economic structures to ultimately reverse it http://tcrn.ch/1xvH4tu "+
+//                    "Saul M-.__6 min-.__@_saulmm-.__This is an awesome sample tweet by a @dummie user, the @dummie user is talking about #things of the real life"+"|_|"+
+//                    "Yoko Ono-.__1 min-.__@_yoko-.__The split() method is used to split a string into an array of substrings, and returns the new array.Tip: If an empty string () is used as the separator, the string is split between each character."+"|_|"+
+//                    "TechChrunch-.__38 min-.__@TechCrunch-.__We don’t have to live with income inequality if we can design the right economic structures to ultimately reverse it http://tcrn.ch/1xvH4tu ";
+
+
+
         }
 
         @Override

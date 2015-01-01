@@ -1,8 +1,13 @@
 package tweetgear.com.saulmm.views.fragments;
 
 import android.app.Fragment;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,10 +17,13 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import tweetgear.com.saulmm.helpers.TwitterHelper;
 import tweetgear.com.saulmm.presenter.UserPresenter;
 import tweetgear.com.saulmm.presenter.UserPresenterImpl;
 import tweetgear.com.saulmm.twittergear.R;
 import tweetgear.com.saulmm.views.view.UserView;
+import tweetgear.com.saulmm.wearables.CommService;
+import twitter4j.Twitter;
 
 
 public class UserFragment extends Fragment implements UserView {
@@ -27,6 +35,7 @@ public class UserFragment extends Fragment implements UserView {
 
     private UserPresenter userPresenter;
     private Button sendTweetsButton;
+    private boolean isBound;
 
 
     @Override
@@ -34,8 +43,57 @@ public class UserFragment extends Fragment implements UserView {
 
         View rootView = initUI(inflater);
         userPresenter = new UserPresenterImpl(this);
+
+        doBindService();
+
         return rootView;
     }
+
+
+    private void doBindService () {
+
+
+        getActivity().bindService(new Intent(getActivity(), CommService.class),
+                mConnection, Context.BIND_AUTO_CREATE);
+
+        isBound = true;
+    }
+
+    private void doUnbindService () {
+
+        if (isBound) {
+            getActivity().unbindService(mConnection);
+
+            isBound = false;
+        }
+    }
+
+
+    private CommService gearService;
+    // Binder to maintain a conversation with the wear & twitter service
+    private final ServiceConnection mConnection = new ServiceConnection() {
+
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+
+            gearService = ((CommService.LocalBinder) service).getService();
+            Log.d("[DEBUG]", "UserFragment onServiceConnected - Service connected ");
+
+            gearService.setTwitterClient(TwitterHelper.getInstance(getActivity())
+                .getTwClient());
+
+
+
+        }
+
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+
+            gearService = null;
+            Log.i ("[INFO] UserFragment - onServiceDisconnected", "Service disconnected");
+        }
+    };
 
     @Override
     public void onResume() {

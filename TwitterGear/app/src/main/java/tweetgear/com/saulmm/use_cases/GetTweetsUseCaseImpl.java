@@ -22,7 +22,7 @@ public class GetTweetsUseCaseImpl implements GetTweetsUseCase {
     private final Twitter twitterClient;
 
 
-    public GetTweetsUseCaseImpl(GetTweetsUseCase.Callback callback, Twitter twitterClient) {
+    public GetTweetsUseCaseImpl(Twitter twitterClient, GetTweetsUseCase.Callback callback) {
 
         if (callback == null)
             throw new IllegalArgumentException("Callback cannot be null");
