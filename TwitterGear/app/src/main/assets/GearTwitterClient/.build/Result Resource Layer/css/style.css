@@ -1,0 +1,18 @@
+.content-padding {
+	padding-top: 14px;
+	padding-bottom: 14px;
+	padding-left: 16px;
+	padding-right: 16px;
+}
+
+.tweet {
+	text-align: center;
+}
+
+#idle_screen {
+	
+}
+
+#loading_screen {
+	visibility: hidden;
+}

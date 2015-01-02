@@ -55,7 +55,7 @@ public class UserPresenterImpl implements UserPresenter {
 
     private void bindGearService() {
 
-        ((Fragment) userView).bindService(new Intent(userView.getContext(), CommService.class),
+        userView.getContext().bindService(new Intent(userView.getContext(), CommService.class),
                 mConnection, Context.BIND_AUTO_CREATE);
     }
 

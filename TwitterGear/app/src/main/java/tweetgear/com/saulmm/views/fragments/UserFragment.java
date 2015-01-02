@@ -34,7 +34,6 @@ public class UserFragment extends Fragment implements UserView {
     private TextView usernameTv;
 
     private UserPresenter userPresenter;
-    private Button sendTweetsButton;
 
 
     @Override
@@ -66,16 +65,8 @@ public class UserFragment extends Fragment implements UserView {
 
         nameTv              = (TextView) rootView.findViewById (R.id.tw_name);
         usernameTv          = (TextView) rootView.findViewById (R.id.tw_username);
-        sendTweetsButton    = (Button) rootView.findViewById (R.id.tw_send_tweets);
         profileImg          = (ImageView) rootView.findViewById (R.id.tw_profile_img);
         userBackground      = (ImageView) rootView.findViewById (R.id.tw_user_background);
-
-        sendTweetsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                userPresenter.sendTweetsButtonClicked();
-            }
-        });
 
         return rootView;
     }
