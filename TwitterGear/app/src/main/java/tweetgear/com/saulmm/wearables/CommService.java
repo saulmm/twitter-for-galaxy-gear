@@ -67,17 +67,15 @@ import tweetgear.com.saulmm.use_cases.GetTweetsUseCaseImpl;
 import twitter4j.Twitter;
 
 public class CommService extends SAAgent {
-    public static final String TAG = "HelloAccessoryProviderService";
 
     public Context mContext = null;
 
     public static final int HELLOACCESSORY_CHANNEL_ID = 104;
-
-    HashMap<Integer, CommServiceProviderConnection> mConnectionsMap = null;
-
-    private final IBinder mBinder = new LocalBinder();
+    private HashMap<Integer, CommServiceProviderConnection> mConnectionsMap;
 
     private Twitter twitterClient;
+    private IBinder mBinder;
+    private int mConnectionId;
 
     public void setTwitterClient(Twitter twitterClient) {
 
@@ -94,12 +92,11 @@ public class CommService extends SAAgent {
 
     public CommService() {
 
-        super(TAG, CommServiceProviderConnection.class);
+        super("[DEBUG]", CommServiceProviderConnection.class);
+        mBinder = new LocalBinder();
     }
 
     public class CommServiceProviderConnection extends SASocket {
-
-        private int mConnectionId;
 
         public CommServiceProviderConnection() {
 
@@ -107,103 +104,13 @@ public class CommService extends SAAgent {
         }
 
         @Override
-        public void onError(int channelId, String errorString, int error) {
-
-            Log.e("[ERROR]", "CommServiceProviderConnection onError - "+errorString);
-        }
-
-        @Override
         public void onReceive(int channelId, byte[] data) {
 
-            final String[] tweets = {""};
+            if (twitterClient == null)
+                throw new IllegalStateException("The twitter client is not initialized");
 
-
-            GetTweetsUseCase getTweetsUseCase = new GetTweetsUseCaseImpl(twitterClient, new GetTweetsUseCase.Callback() {
-                @Override
-                public void onTweetsListLoaded(Collection<Tweet> tweetsCollection) {
-
-                    String fieldSeparator = "-.__";
-                    String tweetSeparator = "|_|";
-
-                    for (Tweet tweet : tweetsCollection) {
-
-                        tweets[0] += tweet.getUsername();
-                        tweets[0] += fieldSeparator;
-                        tweets[0] += tweet.getTime();
-                        tweets[0] += fieldSeparator;
-                        tweets[0] += "@"+tweet.getUsername();
-                        tweets[0] += fieldSeparator;
-                        tweets[0] += tweet.getText();
-
-                        tweets[0] += tweetSeparator;
-
-                    }
-
-                    final CommServiceProviderConnection uHandler = mConnectionsMap.get(
-                            Integer.parseInt(String.valueOf(mConnectionId)));
-
-                    if(uHandler == null) {
-
-                        Log.e("[ERROR]", "HelloAccessoryProviderConnection onReceive " +
-                                "- Connection Handler null");
-
-                        return;
-                    }
-
-                    // Send the message
-                    new Thread(new Runnable() {
-
-                        public void run() {
-
-                            try {
-                                uHandler.send(HELLOACCESSORY_CHANNEL_ID, tweets[0].getBytes());
-
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }).start();
-
-
-                }
-
-                @Override
-                public void onError(String error) {
-
-                    Log.d("[DEBUG]", "CommServiceProviderConnection onError - Error: "+error);
-                }
-            });
-
+            GetTweetsUseCase getTweetsUseCase = new GetTweetsUseCaseImpl(twitterClient, getTweetsCallback);
             JobExecutor.getInstance().execute(getTweetsUseCase);
-
-
-            final String message = tweets[0];
-
-//            final String message = ""+
-//                    "Padre lol-.__6 min-.__@_saulmm-.__This is an awesome sample tweet by a @dummie user, the @dummie user is talking about #things of the real life"+"|_|"+
-//                    "Yoko Ono-.__1 min-.__@_yoko-.__The split() method is used to split a string into an array of substrings, and returns the new array.Tip: If an empty string () is used as the separator, the string is split between each character."+"|_|"+
-//                    "TechChrunch-.__38 min-.__@TechCrunch-.__We don’t have to live with income inequality if we can design the right economic structures to ultimately reverse it http://tcrn.ch/1xvH4tu "+
-//                    "Saul M-.__6 min-.__@_saulmm-.__This is an awesome sample tweet by a @dummie user, the @dummie user is talking about #things of the real life"+"|_|"+
-//                    "Yoko Ono-.__1 min-.__@_yoko-.__The split() method is used to split a string into an array of substrings, and returns the new array.Tip: If an empty string () is used as the separator, the string is split between each character."+"|_|"+
-//                    "TechChrunch-.__38 min-.__@TechCrunch-.__We don’t have to live with income inequality if we can design the right economic structures to ultimately reverse it http://tcrn.ch/1xvH4tu "+
-//                    "Saul M-.__6 min-.__@_saulmm-.__This is an awesome sample tweet by a @dummie user, the @dummie user is talking about #things of the real life"+"|_|"+
-//                    "Yoko Ono-.__1 min-.__@_yoko-.__The split() method is used to split a string into an array of substrings, and returns the new array.Tip: If an empty string () is used as the separator, the string is split between each character."+"|_|"+
-//                    "TechChrunch-.__38 min-.__@TechCrunch-.__We don’t have to live with income inequality if we can design the right economic structures to ultimately reverse it http://tcrn.ch/1xvH4tu "+
-//                    "Saul M-.__6 min-.__@_saulmm-.__This is an awesome sample tweet by a @dummie user, the @dummie user is talking about #things of the real life"+"|_|"+
-//                    "Yoko Ono-.__1 min-.__@_yoko-.__The split() method is used to split a string into an array of substrings, and returns the new array.Tip: If an empty string () is used as the separator, the string is split between each character."+"|_|"+
-//                    "TechChrunch-.__38 min-.__@TechCrunch-.__We don’t have to live with income inequality if we can design the right economic structures to ultimately reverse it http://tcrn.ch/1xvH4tu "+
-//                    "Saul M-.__6 min-.__@_saulmm-.__This is an awesome sample tweet by a @dummie user, the @dummie user is talking about #things of the real life"+"|_|"+
-//                    "Yoko Ono-.__1 min-.__@_yoko-.__The split() method is used to split a string into an array of substrings, and returns the new array.Tip: If an empty string () is used as the separator, the string is split between each character."+"|_|"+
-//                    "TechChrunch-.__38 min-.__@TechCrunch-.__We don’t have to live with income inequality if we can design the right economic structures to ultimately reverse it http://tcrn.ch/1xvH4tu "+
-//                    "Saul M-.__6 min-.__@_saulmm-.__This is an awesome sample tweet by a @dummie user, the @dummie user is talking about #things of the real life"+"|_|"+
-//                    "Yoko Ono-.__1 min-.__@_yoko-.__The split() method is used to split a string into an array of substrings, and returns the new array.Tip: If an empty string () is used as the separator, the string is split between each character."+"|_|"+
-//                    "TechChrunch-.__38 min-.__@TechCrunch-.__We don’t have to live with income inequality if we can design the right economic structures to ultimately reverse it http://tcrn.ch/1xvH4tu "+
-//                    "Saul M-.__6 min-.__@_saulmm-.__This is an awesome sample tweet by a @dummie user, the @dummie user is talking about #things of the real life"+"|_|"+
-//                    "Yoko Ono-.__1 min-.__@_yoko-.__The split() method is used to split a string into an array of substrings, and returns the new array.Tip: If an empty string () is used as the separator, the string is split between each character."+"|_|"+
-//                    "TechChrunch-.__38 min-.__@TechCrunch-.__We don’t have to live with income inequality if we can design the right economic structures to ultimately reverse it http://tcrn.ch/1xvH4tu ";
-
-
-
         }
 
         @Override
@@ -216,6 +123,12 @@ public class CommService extends SAAgent {
 
                 mConnectionsMap.remove(mConnectionId);
             }
+        }
+
+        @Override
+        public void onError(int channelId, String errorString, int error) {
+
+            Log.e("[ERROR]", "CommServiceProviderConnection onError - "+errorString);
         }
     }
 
@@ -243,10 +156,38 @@ public class CommService extends SAAgent {
         }
     }
 
+    @Override
+    protected void onFindPeerAgentResponse(SAPeerAgent arg0, int arg1) {}
 
+    @Override
+    protected void onServiceConnectionResponse(SAPeerAgent peerAgent, SASocket thisConnection,int result) {
 
-    protected void onAuthenticationResponse(SAPeerAgent uPeerAgent,
-                                            SAAuthenticationToken authToken, int error) {
+        if (result == CONNECTION_SUCCESS) {
+
+            if (thisConnection != null) {
+                CommServiceProviderConnection myConnection = (CommServiceProviderConnection) thisConnection;
+
+                if (mConnectionsMap == null)
+                    mConnectionsMap = new HashMap<Integer, CommServiceProviderConnection>();
+
+                mConnectionId = (int) (System.currentTimeMillis() & 255);
+                mConnectionsMap.put(mConnectionId, myConnection);
+            }
+
+        } else if (result == CONNECTION_ALREADY_EXIST) {
+
+            Log.d("[DEBUG]", "HelloAccessoryProviderService onServiceConnectionResponse " +
+                    "- CONNECTION_ALREADY_EXIST");
+        }
+    }
+
+    @Override
+    public IBinder onBind(Intent arg0) {
+
+        return mBinder;
+    }
+
+    protected void onAuthenticationResponse(SAPeerAgent uPeerAgent, SAAuthenticationToken authToken, int error) {
 
         if (authToken.getAuthenticationType() == SAAuthenticationToken.AUTHENTICATION_TYPE_CERTIFICATE_X509) {
 
@@ -337,36 +278,49 @@ public class CommService extends SAAgent {
         return certificat;
     }
 
-    @Override
-    protected void onFindPeerAgentResponse(SAPeerAgent arg0, int arg1) {}
+    private boolean sendMessageToGear (final CommServiceProviderConnection connectionHandler, final String message) {
 
+        new Thread(new Runnable() {
+            public void run() {
 
-    @Override
-    protected void onServiceConnectionResponse(SAPeerAgent peerAgent,
-                                               SASocket thisConnection,int result) {
+                try {
+                    connectionHandler.send(HELLOACCESSORY_CHANNEL_ID, message.getBytes());
 
-        if (result == CONNECTION_SUCCESS) {
-
-            if (thisConnection != null) {
-                CommServiceProviderConnection myConnection = (CommServiceProviderConnection) thisConnection;
-
-                if (mConnectionsMap == null)
-                    mConnectionsMap = new HashMap<Integer, CommServiceProviderConnection>();
-
-                myConnection.mConnectionId = (int) (System.currentTimeMillis() & 255);
-                mConnectionsMap.put(myConnection.mConnectionId, myConnection);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
+        }).start();
 
-        } else if (result == CONNECTION_ALREADY_EXIST) {
 
-            Log.d("[DEBUG]", "HelloAccessoryProviderService onServiceConnectionResponse " +
-                    "- CONNECTION_ALREADY_EXIST");
+        return true;
+    }
+
+    private GetTweetsUseCase.Callback getTweetsCallback = new GetTweetsUseCase.Callback() {
+
+        @Override
+        public void onTweetsListLoaded(Collection<Tweet> tweetsCollection) {
+
+            final String compressedTweets = Tweet.getCompressedTweets(tweetsCollection);
+
+            final CommServiceProviderConnection uHandler = mConnectionsMap.get(
+                    Integer.parseInt(String.valueOf(mConnectionId)));
+
+            if(uHandler != null) {
+
+                sendMessageToGear(uHandler, compressedTweets);
+
+            } else {
+
+                Log.e("[ERROR]", "CommService onTweetsListLoaded - Null communication");
+            }
         }
-    }
 
-    @Override
-    public IBinder onBind(Intent arg0) {
 
-        return mBinder;
-    }
+        @Override
+        public void onError(String error) {
+
+            Log.e("[ERROR]", "CommService onError - "+error);
+        }
+    };
 }
