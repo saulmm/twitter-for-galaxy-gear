@@ -1,9 +1,14 @@
 package tweetgear.com.saulmm.model;
 
+import java.util.Collection;
+
 /**
  * Created by saulmm on 20/12/14.
  */
 public class Tweet {
+
+    public static final String SEPARATOR_FIELD = "-.__";
+    public static final String SEPARATOR_TWEET = "|_|";
 
     private String text;
     private String username;
@@ -50,6 +55,28 @@ public class Tweet {
 
     public int getFavorites() {
         return favorites;
+    }
+
+    public static String getCompressedTweets (Collection<Tweet> homeline) {
+
+        String compressedTweet = "";
+
+        for (Tweet tweet : homeline) {
+
+            compressedTweet += tweet.getUsername();
+            compressedTweet += Tweet.SEPARATOR_FIELD;
+
+            compressedTweet += tweet.getTime();
+            compressedTweet += Tweet.SEPARATOR_FIELD;
+            compressedTweet += "@"+tweet.getUsername();
+
+            compressedTweet += Tweet.SEPARATOR_FIELD;
+            compressedTweet += tweet.getText();
+
+            compressedTweet += Tweet.SEPARATOR_TWEET;
+        }
+
+        return compressedTweet;
     }
 
 }

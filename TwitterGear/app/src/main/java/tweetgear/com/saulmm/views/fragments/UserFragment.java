@@ -1,8 +1,13 @@
 package tweetgear.com.saulmm.views.fragments;
 
 import android.app.Fragment;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,10 +17,13 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import tweetgear.com.saulmm.helpers.TwitterHelper;
 import tweetgear.com.saulmm.presenter.UserPresenter;
 import tweetgear.com.saulmm.presenter.UserPresenterImpl;
 import tweetgear.com.saulmm.twittergear.R;
 import tweetgear.com.saulmm.views.view.UserView;
+import tweetgear.com.saulmm.wearables.CommService;
+import twitter4j.Twitter;
 
 
 public class UserFragment extends Fragment implements UserView {
@@ -26,7 +34,6 @@ public class UserFragment extends Fragment implements UserView {
     private TextView usernameTv;
 
     private UserPresenter userPresenter;
-    private Button sendTweetsButton;
 
 
     @Override
@@ -34,6 +41,7 @@ public class UserFragment extends Fragment implements UserView {
 
         View rootView = initUI(inflater);
         userPresenter = new UserPresenterImpl(this);
+
         return rootView;
     }
 
@@ -57,20 +65,11 @@ public class UserFragment extends Fragment implements UserView {
 
         nameTv              = (TextView) rootView.findViewById (R.id.tw_name);
         usernameTv          = (TextView) rootView.findViewById (R.id.tw_username);
-        sendTweetsButton    = (Button) rootView.findViewById (R.id.tw_send_tweets);
         profileImg          = (ImageView) rootView.findViewById (R.id.tw_profile_img);
         userBackground      = (ImageView) rootView.findViewById (R.id.tw_user_background);
 
-        sendTweetsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                userPresenter.sendTweetsButtonClicked();
-            }
-        });
-
         return rootView;
     }
-
 
     @Override
     public void setNameAndUserName(String name, String username) {

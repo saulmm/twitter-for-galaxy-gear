@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+		<title>Wearable UI</title>
+		<link rel="stylesheet"  href="./lib/tau/wearable/theme/default/tau.css">
+		<link rel="stylesheet"  href="./css/style.css">
+	</head>
+	<body>
+		<div class="ui-page">
+			<header class="ui-header">
+				<h2 class="ui-title">Twitter for S. Gear</h2>
+			</header>
+			
+			<div id="idle_screen">
+				<div class="ui-content content-padding">
+					This is an amazing twitter client for your Tizen (Gear) device, click the button of the bottom to read your awesome tweets :D
+				</div>
+				<footer class="ui-footer">
+					<button id="tweets_button" onclick="connect()" class="ui-btn" >Get tweets</button>
+				</footer>
+			</div>
+			<div id="loading_screen">
+				<div class="ui-processing">
+				</div>
+				<div class="ui-processing-text">
+					Loading tweets
+				</div>
+			</div>
+		</div>
+		
+		
+		<script type="text/javascript" src="./lib/tau/wearable/js/tau.js"></script>
+		<script type="text/javascript" src="./js/main_screen.js"></script>
+		<script type="text/javascript" src="./js/device_handler.js"></script>
+		
+		<script type="text/javascript">
+
+
+		</script>
+	</body>
+</html>

@@ -1,0 +1,43 @@
+
+.content-padding {
+	padding-top: 14px;
+	padding-bottom: 14px;
+	padding-left: 16px;
+	padding-right: 16px;
+}
+
+.tweet {
+	text-align: center;
+}
+
+#idle_screen {
+	
+}
+
+#tweets_container {
+	background-image: url("../images/footer_lodyas.png");
+
+}
+
+#loading_screen {
+	visibility: hidden;
+}
+
+.tweetName {
+	color: #85CBFF;
+}
+
+.tweetTime {
+	color: #85CBFF;
+	margin: -27px;
+	padding:0;
+
+}
+
+.tweetUsername {
+}
+
+.tweetText {
+	margin-top: 50px;
+	color: #FFF;
+}
