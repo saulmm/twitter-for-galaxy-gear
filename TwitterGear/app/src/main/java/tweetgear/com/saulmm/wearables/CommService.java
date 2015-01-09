@@ -109,8 +109,19 @@ public class CommService extends SAAgent {
             if (twitterClient == null)
                 throw new IllegalStateException("The twitter client is not initialized");
 
-            GetTweetsUseCase getTweetsUseCase = new GetTweetsUseCaseImpl(twitterClient, getTweetsCallback);
-            JobExecutor.getInstance().execute(getTweetsUseCase);
+
+            String receivedString = new String (data);
+
+            if (receivedString.equals("/twitter/get_tweets")) {
+
+                GetTweetsUseCase getTweetsUseCase = new GetTweetsUseCaseImpl(twitterClient, getTweetsCallback);
+                JobExecutor.getInstance().execute(getTweetsUseCase);
+
+            } else {
+
+                Log.d("[DEBUG]", "CommServiceProviderConnection onReceive - REceived: "+receivedString);
+            }
+
         }
 
         @Override
