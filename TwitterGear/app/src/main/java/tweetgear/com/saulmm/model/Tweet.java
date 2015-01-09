@@ -10,12 +10,21 @@ public class Tweet {
     public static final String SEPARATOR_FIELD = "-.__";
     public static final String SEPARATOR_TWEET = "|_|";
 
+    private String id;
     private String text;
     private String username;
     private String time;
 
     private int retweets;
     private int favorites;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public void setTime(String time) {
         this.time = time;
@@ -72,6 +81,9 @@ public class Tweet {
 
             compressedTweet += Tweet.SEPARATOR_FIELD;
             compressedTweet += tweet.getText();
+
+            compressedTweet += Tweet.SEPARATOR_FIELD;
+            compressedTweet += tweet.getId();
 
             compressedTweet += Tweet.SEPARATOR_TWEET;
         }

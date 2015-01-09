@@ -8,12 +8,12 @@ import tweetgear.com.saulmm.model.Tweet;
 /**
  * Created by saulmm on 20/12/14.
  */
-public interface GetTweetsUsecase extends Interactor {
+public interface RetweetUsecase extends Interactor {
 
     interface Callback {
-        void onTweetsListLoaded (Collection<Tweet> tweetsCollection);
-        void onError (String error);
+        void onRetweetSuccess();
+        void onError(String error);
     }
 
-    void execute (Callback callback);
+    void execute(Callback callback);
 }

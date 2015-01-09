@@ -14,21 +14,27 @@ import twitter4j.Twitter;
 import twitter4j.TwitterException;
 
 
-public class GetTweetsUsecaseImpl implements GetTweetsUsecase {
+public class RetweetUsecaseImpl implements RetweetUsecase {
 
     private final ThreadExecutor threadExecutor;
     private final PostExecutionThread postExecutionThread;
     private final Callback callback;
     private final Twitter twitterClient;
+    private final String tweetID;
 
 
-    public GetTweetsUsecaseImpl(Twitter twitterClient, GetTweetsUsecase.Callback callback) {
+    public RetweetUsecaseImpl(Twitter twitterClient, String tweetID, Callback callback) {
         
         if (callback == null)
             throw new IllegalArgumentException("Callback cannot be null");
 
         else if (twitterClient == null)
             throw new IllegalArgumentException("Twitter client cannot be null");
+
+        else if (tweetID == null)
+            throw  new IllegalArgumentException("Tweet ID cannot be null");
+
+        this.tweetID = tweetID;
 
         threadExecutor = JobExecutor.getInstance();
         postExecutionThread = UIThread.getInstance();
@@ -52,25 +58,11 @@ public class GetTweetsUsecaseImpl implements GetTweetsUsecase {
 
         try {
 
-            ResponseList<Status> twitterTimeline = twitterClient.getHomeTimeline();
-            ArrayList<Tweet> tweets = new ArrayList<Tweet>(twitterTimeline.size());
-
-            for (Status status : twitterTimeline) {
-
-                Tweet tweet = new Tweet();
-                tweet.setTime(Utils.getTimeDiference(status.getCreatedAt()));
-                tweet.setUsername(status.getUser().getName());
-                tweet.setText(status.getText());
-                tweet.setFavorites(status.getFavoriteCount());
-                tweet.setId(String.valueOf(status.getId()));
-                tweets.add(tweet);
-            }
-
-            callback.onTweetsListLoaded(tweets);
+            twitterClient.retweetStatus(Long.parseLong(tweetID));
+            callback.onRetweetSuccess();
 
         } catch (TwitterException e) {
 
-            e.printStackTrace();
             callback.onError(e.getMessage());
         }
     }
