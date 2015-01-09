@@ -16,3 +16,10 @@ The release [0.1](https://github.com/saulmm/twitter-for-galaxy-gear/releases) sh
 The release [0.2](https://github.com/saulmm/twitter-for-galaxy-gear/releases)  shows how to build an standalone app with AccesorySDK, I think that it's much more comfortable than use RichNotifications, the development is almost identical to the client for [android wear](https://github.com/saulmm/android_wear_twitter), in the mobile device, there would be a running service and the user when pretended to consult their Timeline, open their Tizen application and send a request to their mobile device, this will query to Twitter from the mobile devices and the Timeline will be sent back to the wearable, and this do the draw properly.
 
 ![](https://googledrive.com/host/0B62SZ3WRM2R2bExhYkpacldGZEU)
+
+## Twitter for Galaxy Gear (0.3)
+
+The release [0.3](https://github.com/saulmm/twitter-for-galaxy-gear/releases), implements two new features, retweet & create a favorite, the user from their Galaxy Gear based on Tizen can now from their timeline mark a tweet as favorited or retweet a tweet. The whole protocol of the application has been change in the last commits, the applications is almost done, there is already a lot of 'refactorization' work to do :)
+
+![](https://googledrive.com/host/0B62SZ3WRM2R2dFVlRmUwZEVfZUk)
+
