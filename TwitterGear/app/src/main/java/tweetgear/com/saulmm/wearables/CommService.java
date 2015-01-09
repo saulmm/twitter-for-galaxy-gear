@@ -49,9 +49,7 @@ import android.content.pm.Signature;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Binder;
 import android.os.IBinder;
-import android.text.format.Time;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.samsung.android.sdk.SsdkUnsupportedException;
 import com.samsung.android.sdk.accessory.SA;
@@ -62,8 +60,12 @@ import com.samsung.android.sdk.accessory.SASocket;
 
 import tweetgear.com.saulmm.executor.JobExecutor;
 import tweetgear.com.saulmm.model.Tweet;
-import tweetgear.com.saulmm.use_cases.GetTweetsUseCase;
-import tweetgear.com.saulmm.use_cases.GetTweetsUseCaseImpl;
+import tweetgear.com.saulmm.use_cases.FavoriteUsecase;
+import tweetgear.com.saulmm.use_cases.FavoriteUsecaseImpl;
+import tweetgear.com.saulmm.use_cases.GetTweetsUsecase;
+import tweetgear.com.saulmm.use_cases.GetTweetsUsecaseImpl;
+import tweetgear.com.saulmm.use_cases.RetweetUsecase;
+import tweetgear.com.saulmm.use_cases.RetweetUsecaseImpl;
 import twitter4j.Twitter;
 
 public class CommService extends SAAgent {
@@ -109,8 +111,29 @@ public class CommService extends SAAgent {
             if (twitterClient == null)
                 throw new IllegalStateException("The twitter client is not initialized");
 
-            GetTweetsUseCase getTweetsUseCase = new GetTweetsUseCaseImpl(twitterClient, getTweetsCallback);
-            JobExecutor.getInstance().execute(getTweetsUseCase);
+
+            String receivedString = new String (data);
+
+            if (receivedString.equals("/twitter/get_tweets")) {
+
+                GetTweetsUsecase getTweetsUsecase = new GetTweetsUsecaseImpl(twitterClient, getTweetsCallback);
+                JobExecutor.getInstance().execute(getTweetsUsecase);
+
+            } else if (receivedString.startsWith("/twitter/retweet/")) {
+
+                Log.d("[DEBUG]", "CommServiceProviderConnection onReceive - ");
+                String tweetID = receivedString.split("/")[3];
+                Log.d("[DEBUG]", "CommServiceProviderConnection onReceive - Tweet ID "+tweetID);
+                RetweetUsecase retweetUsecase = new RetweetUsecaseImpl(twitterClient, tweetID, retweetCallback);
+                JobExecutor.getInstance().execute(retweetUsecase);
+
+            } else if (receivedString.startsWith("/twitter/favorite/")) {
+
+                Log.d("[DEBUG]", "CommServiceProviderConnection onReceive - ");
+                String tweetID = receivedString.split("/")[3];
+                FavoriteUsecase favoriteUsecase = new FavoriteUsecaseImpl(twitterClient, tweetID, favoriteCallback);
+                JobExecutor.getInstance().execute(favoriteUsecase);
+            }
         }
 
         @Override
@@ -296,7 +319,7 @@ public class CommService extends SAAgent {
         return true;
     }
 
-    private GetTweetsUseCase.Callback getTweetsCallback = new GetTweetsUseCase.Callback() {
+    private GetTweetsUsecase.Callback getTweetsCallback = new GetTweetsUsecase.Callback() {
 
         @Override
         public void onTweetsListLoaded(Collection<Tweet> tweetsCollection) {
@@ -308,7 +331,8 @@ public class CommService extends SAAgent {
 
             if(uHandler != null) {
 
-                sendMessageToGear(uHandler, compressedTweets);
+                String order = "__tw";
+                sendMessageToGear(uHandler, order + "|=|"+ compressedTweets);
 
             } else {
 
@@ -321,6 +345,35 @@ public class CommService extends SAAgent {
         public void onError(String error) {
 
             Log.e("[ERROR]", "CommService onError - "+error);
+        }
+    };
+
+    private RetweetUsecase.Callback retweetCallback = new RetweetUsecase.Callback() {
+
+        @Override
+        public void onRetweetSuccess() {
+            Log.d("[DEBUG]", "CommService onRetweetSuccess - Success");
+        }
+
+        @Override
+        public void onError(String error) {
+
+            Log.d("[DEBUG]", "CommService onError - Fail "+error);
+        }
+    };
+
+    private FavoriteUsecase.Callback favoriteCallback = new FavoriteUsecase.Callback() {
+        @Override
+        public void onFavoriteSuccess() {
+
+            Log.d("[DEBUG]", "CommService onFavoriteSuccess - Success");
+        }
+
+        @Override
+        public void onFavoriteError() {
+
+            Log.e("[ERROR]", "CommService onFavoriteError - Favorite error");
+
         }
     };
 }

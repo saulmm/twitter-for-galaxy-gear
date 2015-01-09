@@ -1,7 +1,6 @@
 package tweetgear.com.saulmm.presenter;
 
 
-import android.app.Fragment;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -18,11 +17,11 @@ import tweetgear.com.saulmm.executor.ThreadExecutor;
 import tweetgear.com.saulmm.executor.UIThread;
 import tweetgear.com.saulmm.helpers.TwitterHelper;
 import tweetgear.com.saulmm.model.Tweet;
+import tweetgear.com.saulmm.use_cases.GetTweetsUsecase;
+import tweetgear.com.saulmm.use_cases.GetTweetsUsecaseImpl;
 import tweetgear.com.saulmm.wearables.CommService;
 import tweetgear.com.saulmm.wearables.GearSender;
 import tweetgear.com.saulmm.wearables.NotificationSender;
-import tweetgear.com.saulmm.use_cases.GetTweetsUseCase;
-import tweetgear.com.saulmm.use_cases.GetTweetsUseCaseImpl;
 import tweetgear.com.saulmm.utils.Constants;
 import tweetgear.com.saulmm.views.view.UserView;
 import twitter4j.Twitter;
@@ -127,10 +126,10 @@ public class UserPresenterImpl implements UserPresenter {
         Twitter twitterClient = TwitterHelper.getInstance(userView.getContext())
             .getTwClient();
 
-        GetTweetsUseCase getTweetsUseCase = new GetTweetsUseCaseImpl(
+        GetTweetsUsecase getTweetsUsecase = new GetTweetsUsecaseImpl(
            twitterClient, receiveTweetsCallback);
 
-        threadExecutor.execute(getTweetsUseCase);
+        threadExecutor.execute(getTweetsUsecase);
     }
 
     @Override
@@ -141,7 +140,7 @@ public class UserPresenterImpl implements UserPresenter {
     }
 
 
-    private GetTweetsUseCase.Callback receiveTweetsCallback = new GetTweetsUseCase.Callback() {
+    private GetTweetsUsecase.Callback receiveTweetsCallback = new GetTweetsUsecase.Callback() {
 
         @Override
         public void onTweetsListLoaded(Collection<Tweet> tweetsCollection) {

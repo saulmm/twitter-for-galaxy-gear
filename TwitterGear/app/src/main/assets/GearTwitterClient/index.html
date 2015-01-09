@@ -17,7 +17,7 @@
 					This is an amazing twitter client for your Tizen (Gear) device, click the button of the bottom to read your awesome tweets :D
 				</div>
 				<footer class="ui-footer">
-					<button id="tweets_button" onclick="connect()" class="ui-btn" >Get tweets</button>
+					<button id="tweets_button" onclick="start()" class="ui-btn" >Get tweets</button>
 				</footer>
 			</div>
 			<div id="loading_screen">
@@ -29,13 +29,21 @@
 			</div>
 		</div>
 		
-		
 		<script type="text/javascript" src="./lib/tau/wearable/js/tau.js"></script>
 		<script type="text/javascript" src="./js/main_screen.js"></script>
 		<script type="text/javascript" src="./js/device_handler.js"></script>
 		
 		<script type="text/javascript">
-
+			
+			function start() {
+				document.getElementById('idle_screen').style.visibility = 'hidden';
+    			document.getElementById('loading_screen').style.visibility = 'visible';
+    			    			
+				connect();
+				setConnectedCallback(function () { 
+					fetch ("/twitter/get_tweets");
+				});
+			}
 
 		</script>
 	</body>

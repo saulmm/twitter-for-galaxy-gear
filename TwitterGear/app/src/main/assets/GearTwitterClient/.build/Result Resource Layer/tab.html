@@ -18,7 +18,28 @@
 			</div>
 		</div>
 		<script src="./js/hsection.js"></script>
+		<script type="text/javascript" src="./js/device_handler.js"></script>
 	</div>
 <script type="text/javascript" src="./lib/tau/wearable/js/tau.js"></script>
+
+	<script type="text/javascript">
+			
+				connect();
+				setConnectedCallback(function () { 
+				
+				});
+			
+			function retweet(id) {
+
+				fetch ("/twitter/retweet/"+id);
+			
+			}
+			
+			function favorite (id) {
+				
+				fetch ("/twitter/favorite/"+id);
+			}
+
+		</script>
 </body>
 </html>

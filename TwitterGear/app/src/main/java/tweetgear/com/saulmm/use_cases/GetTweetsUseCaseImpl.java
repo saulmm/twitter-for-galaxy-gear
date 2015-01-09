@@ -14,7 +14,7 @@ import twitter4j.Twitter;
 import twitter4j.TwitterException;
 
 
-public class GetTweetsUseCaseImpl implements GetTweetsUseCase {
+public class GetTweetsUsecaseImpl implements GetTweetsUsecase {
 
     private final ThreadExecutor threadExecutor;
     private final PostExecutionThread postExecutionThread;
@@ -22,8 +22,8 @@ public class GetTweetsUseCaseImpl implements GetTweetsUseCase {
     private final Twitter twitterClient;
 
 
-    public GetTweetsUseCaseImpl(Twitter twitterClient, GetTweetsUseCase.Callback callback) {
-
+    public GetTweetsUsecaseImpl(Twitter twitterClient, GetTweetsUsecase.Callback callback) {
+        
         if (callback == null)
             throw new IllegalArgumentException("Callback cannot be null");
 
@@ -62,7 +62,7 @@ public class GetTweetsUseCaseImpl implements GetTweetsUseCase {
                 tweet.setUsername(status.getUser().getName());
                 tweet.setText(status.getText());
                 tweet.setFavorites(status.getFavoriteCount());
-
+                tweet.setId(String.valueOf(status.getId()));
                 tweets.add(tweet);
             }
 
