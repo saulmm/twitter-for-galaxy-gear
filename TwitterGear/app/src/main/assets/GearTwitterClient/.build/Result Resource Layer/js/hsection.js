@@ -6,20 +6,15 @@ var page = document.getElementById( "hsectionchangerPage" ),
 
 	page.addEventListener( "pagebeforecreate", function() {
 
-		console.log("Executing section changer before create function");
 		tweetsContainer = document.getElementById('tweets_container');
 
-		console.log("Trying to get tweets from local store");
 		var testTweets = window.localStorage.getItem("tweets");
-		console.log("Tweets obtained: "+testTweets);
-
 		var tweets = testTweets.split ("|_|");
+		console.log("Test tweets: "+testTweets);
 
 		for (var i = 0; i < tweets.length; i++) {
 
 			var testTweetParts = tweets[i].split("-.__");
-
-			console.log ("Adding tweet page");
 			
 			var nameElement = document.createElement("p");
 			nameElement.innerHTML = testTweetParts[0];
@@ -41,12 +36,28 @@ var page = document.getElementById( "hsectionchangerPage" ),
 			tweetElement.innerHTML = testTweetParts[3];
 			tweetElement.className = "tweetText"
 
+			var div_grid = document.createElement("div");
+			div_grid.className = "ui-grid-row";
+
+			var buttonFavorite = document.createElement("a"); 
+			buttonFavorite.setAttribute ("class", "ui-btn");
+			buttonFavorite.setAttribute ("onclick", "favorite(\""+testTweetParts[4]+"\")");
+			buttonFavorite.innerHTML = "Favorite";
+			div_grid.appendChild(buttonFavorite);
+
+			var buttonRetweet = document.createElement("a"); 
+			buttonRetweet.setAttribute ("class", "ui-btn");
+			buttonRetweet.innerHTML = "Retweet";
+			buttonRetweet.setAttribute ("onclick", "retweet(\""+testTweetParts[4]+"\")");
+			div_grid.appendChild(buttonRetweet);
+
 			var tweet = document.createElement("section");
 			tweet.className = "tweet"
 			tweet.appendChild(nameElement);
 			tweet.appendChild(usernameElement);
 			tweet.appendChild(timeElement);
 			tweet.appendChild(tweetElement);
+			tweet.appendChild(div_grid)
 			tweetsContainer.appendChild(tweet);
 		}
 	});
