@@ -17,8 +17,8 @@ import tweetgear.com.saulmm.executor.ThreadExecutor;
 import tweetgear.com.saulmm.executor.UIThread;
 import tweetgear.com.saulmm.helpers.TwitterHelper;
 import tweetgear.com.saulmm.model.Tweet;
-import tweetgear.com.saulmm.use_cases.GetTweetsUsecase;
-import tweetgear.com.saulmm.use_cases.GetTweetsUsecaseImpl;
+import tweetgear.com.saulmm.use_cases.GetTweetsUseCase;
+import tweetgear.com.saulmm.use_cases.GetTweetsUseCaseImpl;
 import tweetgear.com.saulmm.wearables.CommService;
 import tweetgear.com.saulmm.wearables.GearSender;
 import tweetgear.com.saulmm.wearables.NotificationSender;
@@ -126,7 +126,7 @@ public class UserPresenterImpl implements UserPresenter {
         Twitter twitterClient = TwitterHelper.getInstance(userView.getContext())
             .getTwClient();
 
-        GetTweetsUsecase getTweetsUsecase = new GetTweetsUsecaseImpl(
+        GetTweetsUseCase getTweetsUsecase = new GetTweetsUseCaseImpl(
            twitterClient, receiveTweetsCallback);
 
         threadExecutor.execute(getTweetsUsecase);
@@ -140,7 +140,7 @@ public class UserPresenterImpl implements UserPresenter {
     }
 
 
-    private GetTweetsUsecase.Callback receiveTweetsCallback = new GetTweetsUsecase.Callback() {
+    private GetTweetsUseCase.Callback receiveTweetsCallback = new GetTweetsUseCase.Callback() {
 
         @Override
         public void onTweetsListLoaded(Collection<Tweet> tweetsCollection) {

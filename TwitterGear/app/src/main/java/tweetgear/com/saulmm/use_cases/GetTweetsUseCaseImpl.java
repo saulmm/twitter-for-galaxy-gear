@@ -14,7 +14,7 @@ import twitter4j.Twitter;
 import twitter4j.TwitterException;
 
 
-public class GetTweetsUsecaseImpl implements GetTweetsUsecase {
+public class GetTweetsUseCaseImpl implements GetTweetsUseCase {
 
     private final ThreadExecutor threadExecutor;
     private final PostExecutionThread postExecutionThread;
@@ -22,7 +22,7 @@ public class GetTweetsUsecaseImpl implements GetTweetsUsecase {
     private final Twitter twitterClient;
 
 
-    public GetTweetsUsecaseImpl(Twitter twitterClient, GetTweetsUsecase.Callback callback) {
+    public GetTweetsUseCaseImpl(Twitter twitterClient, GetTweetsUseCase.Callback callback) {
         
         if (callback == null)
             throw new IllegalArgumentException("Callback cannot be null");
