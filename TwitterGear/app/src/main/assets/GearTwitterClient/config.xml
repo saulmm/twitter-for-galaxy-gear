@@ -5,7 +5,7 @@
     <feature name="http://developer.samsung.com/tizen/feature/network.accessory_protocol"/>
     <icon src="icon.png"/>
     <tizen:metadata key="AccessoryServicesLocation" value="res/xml/accessoryservices.xml"/>
-    <name>HelloAccessoryConsumer</name>
+    <name>TwitterGear</name>
     <tizen:privilege name="http://developer.samsung.com/privilege/accessoryprotocol"/>
     <tizen:setting background-support="disable" encryption="disable" hwkey-event="enable"/>
 </widget>
