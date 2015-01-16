@@ -65,9 +65,9 @@ var page = document.getElementById( "hsectionchangerPage" ),
 page.addEventListener( "pagebeforeshow", function() {
 	// make SectionChanger object
 	sectionChanger = new tau.widget.SectionChanger(changer, {
-		circular: false,
+		circular: true,
 		orientation: "horizontal",
-		useBouncingEffect: true
+		scrollbar: "tab"
 	});
 });
 
