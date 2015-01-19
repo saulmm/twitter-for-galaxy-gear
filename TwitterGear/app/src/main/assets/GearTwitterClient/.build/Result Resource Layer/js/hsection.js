@@ -50,6 +50,18 @@ var page = document.getElementById( "hsectionchangerPage" ),
 			buttonRetweet.innerHTML = "Retweet";
 			buttonRetweet.setAttribute ("onclick", "retweet(\""+testTweetParts[4]+"\")");
 			div_grid.appendChild(buttonRetweet);
+			
+			
+			var buttonDiv = document.createElement("div");
+			buttonDiv.setAttribute ("class", "ui-grid-col-3 button-group-height");
+			var rt_img = document.createElement("img");
+			rt_img.setAttribute ("src", "./images/rt.png");
+			
+			var fav_img = document.createElement("img");
+			fav_img.setAttribute ("src", "./images/fav.png");
+			
+			buttonDiv.appendChild(rt_img);
+			buttonDiv.appendChild(fav_img);
 
 			var tweet = document.createElement("section");
 			tweet.className = "tweet"
@@ -57,7 +69,9 @@ var page = document.getElementById( "hsectionchangerPage" ),
 			tweet.appendChild(usernameElement);
 			tweet.appendChild(timeElement);
 			tweet.appendChild(tweetElement);
-			tweet.appendChild(div_grid)
+			//tweet.appendChild(buttonDiv);
+//			tweet.appendChild(div_grid)
+
 			tweetsContainer.appendChild(tweet);
 		}
 	});
@@ -65,9 +79,9 @@ var page = document.getElementById( "hsectionchangerPage" ),
 page.addEventListener( "pagebeforeshow", function() {
 	// make SectionChanger object
 	sectionChanger = new tau.widget.SectionChanger(changer, {
-		circular: false,
+		circular: true,
 		orientation: "horizontal",
-		useBouncingEffect: true
+		scrollbar: "tab"
 	});
 });
 
