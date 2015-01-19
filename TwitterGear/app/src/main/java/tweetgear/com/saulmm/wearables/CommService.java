@@ -111,7 +111,6 @@ public class CommService extends SAAgent {
             if (twitterClient == null)
                 throw new IllegalStateException("The twitter client is not initialized");
 
-
             String receivedString = new String (data);
 
             if (receivedString.equals("/twitter/get_tweets")) {
