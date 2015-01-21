@@ -32,46 +32,66 @@ var page = document.getElementById( "hsectionchangerPage" ),
 
 			testTweetParts[3] = testTweetParts[3].replace(/@(\w+)/g,"<font color='85CBFF'>@$1</font>")
 			testTweetParts[3] = testTweetParts[3].replace(/#(\w+)/g,"<font color='85CBFF'>@$1</font>")
+			testTweetParts[3] = testTweetParts[3].replace(/(\(.*?)?\b((?:https?|ftp|file):\/\/[-a-z0-9+&@#\/%?=~_()|!:,.;]*[-a-z0-9+&@#\/%=~_()|])/ig,
+			"");
 
+		
+			
+			
 			tweetElement.innerHTML = testTweetParts[3];
 			tweetElement.className = "tweetText"
 
-			var div_grid = document.createElement("div");
-			div_grid.className = "ui-grid-row";
 
-			var buttonFavorite = document.createElement("a"); 
-			buttonFavorite.setAttribute ("class", "ui-btn");
-			buttonFavorite.setAttribute ("onclick", "favorite(\""+testTweetParts[4]+"\")");
-			buttonFavorite.innerHTML = "Favorite";
-			div_grid.appendChild(buttonFavorite);
+			// Icon of favorite
+			var favoriteImage = document.createElement ("img");
+			favoriteImage.setAttribute ("id", "fav_img");
+			favoriteImage.setAttribute ("src", "./images/fav.png");
+			favoriteImage.setAttribute ("class", "tweet_action_img");
 
-			var buttonRetweet = document.createElement("a"); 
-			buttonRetweet.setAttribute ("class", "ui-btn");
-			buttonRetweet.innerHTML = "Retweet";
-			buttonRetweet.setAttribute ("onclick", "retweet(\""+testTweetParts[4]+"\")");
-			div_grid.appendChild(buttonRetweet);
+			// Text with rhe favorite count
+			var favoriteText = document.createElement ("p");
+			favoriteText.setAttribute ("class", "tweet_action_text");
+			favoriteText.innerHTML = ""+testTweetParts[5];
 			
-			
-			var buttonDiv = document.createElement("div");
-			buttonDiv.setAttribute ("class", "ui-grid-col-3 button-group-height");
-			var rt_img = document.createElement("img");
-			rt_img.setAttribute ("src", "./images/rt.png");
-			
-			var fav_img = document.createElement("img");
-			fav_img.setAttribute ("src", "./images/fav.png");
-			
-			buttonDiv.appendChild(rt_img);
-			buttonDiv.appendChild(fav_img);
+			// Container to wrap the favorite elements
+			var favoriteContainer = document.createElement ("div");
+			favoriteContainer.setAttribute ("class", "tweet_action_container");
+			favoriteContainer.appendChild (favoriteImage);
+			favoriteContainer.appendChild (favoriteText);
+			favoriteContainer.setAttribute ("onclick", "favorite(\""+testTweetParts[4]+"\")");
 
+			// Icon of the retweet
+			var retweetImage = document.createElement ("img");
+			retweetImage.setAttribute ("id", "rt_img");
+			retweetImage.setAttribute ("src", "./images/rt.png");
+			retweetImage.setAttribute ("class", "tweet_action_img");
+			
+			// Text with rhe retweet count
+			var retweetText = document.createElement ("p");
+			retweetText.setAttribute ("class", "tweet_action_text");
+			retweetText.innerHTML = ""+testTweetParts[6];
+			
+			// Container to wrap the retweet elements
+			var retweetContainer = document.createElement ("div");
+			retweetContainer.setAttribute ("class", "tweet_action_container");
+			retweetContainer.appendChild (retweetImage);
+			retweetContainer.appendChild (retweetText);
+			retweetContainer.setAttribute ("onclick", "favorite(\""+testTweetParts[4]+"\")");
+		
+			// The container that align both containers as a row
+			var actionsContainer = document.createElement("div");
+			actionsContainer.setAttribute ("class", "ui-grid-col-2 footer");
+			actionsContainer.appendChild(favoriteContainer);
+			actionsContainer.appendChild(retweetContainer);
+		
+			// The section that wraps all the parts of the tweet
 			var tweet = document.createElement("section");
 			tweet.className = "tweet"
 			tweet.appendChild(nameElement);
 			tweet.appendChild(usernameElement);
 			tweet.appendChild(timeElement);
 			tweet.appendChild(tweetElement);
-			//tweet.appendChild(buttonDiv);
-//			tweet.appendChild(div_grid)
-
+			tweet.appendChild(actionsContainer)
 			tweetsContainer.appendChild(tweet);
 		}
 	});
@@ -89,5 +109,6 @@ page.addEventListener( "pagehide", function() {
 	// release object
 	sectionChanger.destroy();
 });
+			
 
 })();

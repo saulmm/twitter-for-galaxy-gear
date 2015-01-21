@@ -24,18 +24,25 @@
 
 	<script type="text/javascript">
 			
-				connect();
-				setConnectedCallback(function () { 
 				
-				});
+			
+			connect();
+			setConnectedCallback(function () { 
+				
+			});
 			
 			function retweet(id) {
-
+				var img = document.getElementById ("rt_img");
+				img.setAttribute ("src", "./images/rt_blue.png");
+				
 				fetch ("/twitter/retweet/"+id);
+				
 			
 			}
 			
 			function favorite (id) {
+				var img = document.getElementById ("fav_img");
+				img.setAttribute ("src", "./images/fav_blue.png");
 				
 				fetch ("/twitter/favorite/"+id);
 			}
