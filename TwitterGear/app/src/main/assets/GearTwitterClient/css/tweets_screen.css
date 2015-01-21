@@ -11,6 +11,15 @@
 	padding: 10px;
 }
 
+.card {
+  	padding:1.5rem;
+  	box-shadow:0 1px 2px #aaa;
+  	background:white;
+  	margin:0 1rem 1rem;
+  	border-radius:3px;
+  	user-select:none;
+  	transform-origin:top left;
+}
 
 
 .tweet_action_container {
@@ -32,7 +41,7 @@
 }
 
 #tweets_container {
-	background-image: url("../images/footer_lodyas.png");
+	background-image: url("../images/tw_wall_blue.png");
 
 }
 

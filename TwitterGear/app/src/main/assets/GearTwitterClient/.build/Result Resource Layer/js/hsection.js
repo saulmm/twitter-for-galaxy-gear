@@ -39,13 +39,13 @@ var page = document.getElementById( "hsectionchangerPage" ),
 
 			// Icon of favorite
 			var favoriteImage = document.createElement ("img");
-			favoriteImage.setAttribute ("id", "fav_img");
+			favoriteImage.setAttribute ("id", "fav_img"+i);
 			favoriteImage.setAttribute ("src", "./images/fav.png");
 			favoriteImage.setAttribute ("class", "tweet_action_img");
 
 			// Text with rhe favorite count
 			var favoriteText = document.createElement ("p");
-			favoriteText.setAttribute ("id", "fav_text");
+			favoriteText.setAttribute ("id", "fav_text"+i);
 			favoriteText.setAttribute ("class", "tweet_action_text");
 			favoriteText.innerHTML = ""+rawTweetParts[5];
 			
@@ -54,17 +54,17 @@ var page = document.getElementById( "hsectionchangerPage" ),
 			favoriteContainer.setAttribute ("class", "tweet_action_container");
 			favoriteContainer.appendChild (favoriteImage);
 			favoriteContainer.appendChild (favoriteText);
-			favoriteContainer.setAttribute ("onclick", "favorite(\""+rawTweetParts[4]+"\")");
+			favoriteContainer.setAttribute ("onclick", "favorite(\""+rawTweetParts[4]+"\",\""+i+"\")");
 
 			// Icon of the retweet
 			var retweetImage = document.createElement ("img");
-			retweetImage.setAttribute ("id", "rt_img");
+			retweetImage.setAttribute ("id", "rt_img"+i);
 			retweetImage.setAttribute ("src", "./images/rt.png");
 			retweetImage.setAttribute ("class", "tweet_action_img");
 			
 			// Text with rhe retweet count
 			var retweetText = document.createElement ("p");
-			retweetText.setAttribute ("id", "rt_text");
+			retweetText.setAttribute ("id", "rt_text"+i);
 			retweetText.setAttribute ("class", "tweet_action_text");
 			retweetText.innerHTML = ""+rawTweetParts[6];
 			
@@ -73,7 +73,7 @@ var page = document.getElementById( "hsectionchangerPage" ),
 			retweetContainer.setAttribute ("class", "tweet_action_container");
 			retweetContainer.appendChild (retweetImage);
 			retweetContainer.appendChild (retweetText);
-			retweetContainer.setAttribute ("onclick", "retweet(\""+rawTweetParts[4]+"\")");
+			retweetContainer.setAttribute ("onclick", "retweet(\""+rawTweetParts[4]+"\",\""+i+"\")");
 		
 			// The container that align both containers as a row
 			var actionsContainer = document.createElement("div");
