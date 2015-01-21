@@ -138,7 +138,7 @@ function onreceive(channelId, data) {
 		var tweets = data.split('|=|')[1];
 		
 		window.localStorage.setItem("tweets", tweets); 
-		window.location.assign("tab.html");
+		window.location.assign("tweets_screen.html");
 	
 	} else if (data.substring(0, 4) === "__rt") {
 		

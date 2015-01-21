@@ -4,28 +4,19 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
 		<title>Wearable UI</title>
 		<link rel="stylesheet"  href="./lib/tau/wearable/theme/default/tau.css">
-		<link rel="stylesheet"  href="./css/style.css">
+		<link rel="stylesheet"  href="./css/main_screen.css">
 	</head>
 	<body>
-		<div class="ui-page">
-			<header class="ui-header">
-				<h2 class="ui-title">Twitter for S. Gear</h2>
-			</header>
+		<div id="main_screen" class="ui-page">
 			
-			<div id="idle_screen">
-				<div class="ui-content content-padding">
-					This is an amazing twitter client for your Tizen (Gear) device, click the button of the bottom to read your awesome tweets :D
-				</div>
-				<footer class="ui-footer">
-					<button id="tweets_button" onclick="start()" class="ui-btn" >Get tweets</button>
-				</footer>
-			</div>
-			<div id="loading_screen">
-				<div class="ui-processing">
-				</div>
-				<div class="ui-processing-text">
+			<div id="loading_screen" class="card">
+				<div class="ui-processing-text loading_text">
 					Loading tweets
 				</div>
+
+				<div class="ui-processing loading_spinner">
+				</div>
+
 			</div>
 		</div>
 		
@@ -35,15 +26,17 @@
 		
 		<script type="text/javascript">
 			
+			
 			function start() {
-				document.getElementById('idle_screen').style.visibility = 'hidden';
-    			document.getElementById('loading_screen').style.visibility = 'visible';
     			    			
 				connect();
+				
 				setConnectedCallback(function () { 
 					fetch ("/twitter/get_tweets");
 				});
 			}
+			
+			start ();
 
 		</script>
 	</body>

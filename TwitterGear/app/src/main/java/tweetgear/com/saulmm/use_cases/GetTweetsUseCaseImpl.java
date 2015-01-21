@@ -1,5 +1,7 @@
 package tweetgear.com.saulmm.use_cases;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 
 import tweetgear.com.saulmm.executor.JobExecutor;
@@ -14,7 +16,7 @@ import twitter4j.Twitter;
 import twitter4j.TwitterException;
 
 
-public class GetTweetsUsecaseImpl implements GetTweetsUsecase {
+public class GetTweetsUseCaseImpl implements GetTweetsUseCase {
 
     private final ThreadExecutor threadExecutor;
     private final PostExecutionThread postExecutionThread;
@@ -22,7 +24,7 @@ public class GetTweetsUsecaseImpl implements GetTweetsUsecase {
     private final Twitter twitterClient;
 
 
-    public GetTweetsUsecaseImpl(Twitter twitterClient, GetTweetsUsecase.Callback callback) {
+    public GetTweetsUseCaseImpl(Twitter twitterClient, GetTweetsUseCase.Callback callback) {
         
         if (callback == null)
             throw new IllegalArgumentException("Callback cannot be null");
@@ -57,13 +59,19 @@ public class GetTweetsUsecaseImpl implements GetTweetsUsecase {
 
             for (Status status : twitterTimeline) {
 
+                String time = Utils.getTimeDiference(status.getCreatedAt()).replace("-","");
+
                 Tweet tweet = new Tweet();
-                tweet.setTime(Utils.getTimeDiference(status.getCreatedAt()));
-                tweet.setUsername(status.getUser().getName());
+                tweet.setTime(time);
+                tweet.setName(status.getUser().getName());
+                tweet.setUsername(status.getUser().getScreenName());
                 tweet.setText(status.getText());
                 tweet.setFavorites(status.getFavoriteCount());
+                tweet.setRetweets(status.getRetweetCount());
                 tweet.setId(String.valueOf(status.getId()));
                 tweets.add(tweet);
+
+                Log.d("[DEBUG]", "GetTweetsUseCaseImpl run - Tweet: " + tweet.toString());
             }
 
             callback.onTweetsListLoaded(tweets);

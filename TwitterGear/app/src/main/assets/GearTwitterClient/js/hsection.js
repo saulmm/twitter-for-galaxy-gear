@@ -8,56 +8,87 @@ var page = document.getElementById( "hsectionchangerPage" ),
 
 		tweetsContainer = document.getElementById('tweets_container');
 
-		var testTweets = window.localStorage.getItem("tweets");
-		var tweets = testTweets.split ("|_|");
-		console.log("Test tweets: "+testTweets);
+		var rawTweets = window.localStorage.getItem("tweets");
+		var tweets = rawTweets.split ("|_|");
 
 		for (var i = 0; i < tweets.length; i++) {
 
-			var testTweetParts = tweets[i].split("-.__");
+			var rawTweetParts = tweets[i].split("-.__");
 			
 			var nameElement = document.createElement("p");
-			nameElement.innerHTML = testTweetParts[0];
+			nameElement.innerHTML = rawTweetParts[0];
 			nameElement.className = "tweetName"
 
 			var timeElement = document.createElement("p");
-			timeElement.innerHTML = testTweetParts[1];
+			timeElement.innerHTML = rawTweetParts[1];
 			timeElement.className = "tweetTime"
 
 			var usernameElement = document.createElement("p");
-			usernameElement.innerHTML = testTweetParts[2];
+			usernameElement.innerHTML = rawTweetParts[2];
 			usernameElement.className = "tweetUsername"
 
 			var tweetElement = document.createElement("p");
 
-			testTweetParts[3] = testTweetParts[3].replace(/@(\w+)/g,"<font color='85CBFF'>@$1</font>")
-			testTweetParts[3] = testTweetParts[3].replace(/#(\w+)/g,"<font color='85CBFF'>@$1</font>")
-
-			tweetElement.innerHTML = testTweetParts[3];
+			rawTweetParts[3] = rawTweetParts[3].replace(/@(\w+)/g,"<font color='85CBFF'>@$1</font>")
+			rawTweetParts[3] = rawTweetParts[3].replace(/#(\w+)/g,"<font color='85CBFF'>#$1</font>")
+			rawTweetParts[3] = rawTweetParts[3].replace(/(\(.*?)?\b((?:https?|ftp|file):\/\/[-a-z0-9+&@#\/%?=~_()|!:,.;]*[-a-z0-9+&@#\/%=~_()|])/ig,
+			"");
+			
+			tweetElement.innerHTML = rawTweetParts[3];
 			tweetElement.className = "tweetText"
 
-			var div_grid = document.createElement("div");
-			div_grid.className = "ui-grid-row";
+			// Icon of favorite
+			var favoriteImage = document.createElement ("img");
+			favoriteImage.setAttribute ("id", "fav_img"+i);
+			favoriteImage.setAttribute ("src", "./images/fav.png");
+			favoriteImage.setAttribute ("class", "tweet_action_img");
 
-			var buttonFavorite = document.createElement("a"); 
-			buttonFavorite.setAttribute ("class", "ui-btn");
-			buttonFavorite.setAttribute ("onclick", "favorite(\""+testTweetParts[4]+"\")");
-			buttonFavorite.innerHTML = "Favorite";
-			div_grid.appendChild(buttonFavorite);
+			// Text with rhe favorite count
+			var favoriteText = document.createElement ("p");
+			favoriteText.setAttribute ("id", "fav_text"+i);
+			favoriteText.setAttribute ("class", "tweet_action_text");
+			favoriteText.innerHTML = ""+rawTweetParts[5];
+			
+			// Container to wrap the favorite elements
+			var favoriteContainer = document.createElement ("div");
+			favoriteContainer.setAttribute ("class", "tweet_action_container");
+			favoriteContainer.appendChild (favoriteImage);
+			favoriteContainer.appendChild (favoriteText);
+			favoriteContainer.setAttribute ("onclick", "favorite(\""+rawTweetParts[4]+"\",\""+i+"\")");
 
-			var buttonRetweet = document.createElement("a"); 
-			buttonRetweet.setAttribute ("class", "ui-btn");
-			buttonRetweet.innerHTML = "Retweet";
-			buttonRetweet.setAttribute ("onclick", "retweet(\""+testTweetParts[4]+"\")");
-			div_grid.appendChild(buttonRetweet);
-
+			// Icon of the retweet
+			var retweetImage = document.createElement ("img");
+			retweetImage.setAttribute ("id", "rt_img"+i);
+			retweetImage.setAttribute ("src", "./images/rt.png");
+			retweetImage.setAttribute ("class", "tweet_action_img");
+			
+			// Text with rhe retweet count
+			var retweetText = document.createElement ("p");
+			retweetText.setAttribute ("id", "rt_text"+i);
+			retweetText.setAttribute ("class", "tweet_action_text");
+			retweetText.innerHTML = ""+rawTweetParts[6];
+			
+			// Container to wrap the retweet elements
+			var retweetContainer = document.createElement ("div");
+			retweetContainer.setAttribute ("class", "tweet_action_container");
+			retweetContainer.appendChild (retweetImage);
+			retweetContainer.appendChild (retweetText);
+			retweetContainer.setAttribute ("onclick", "retweet(\""+rawTweetParts[4]+"\",\""+i+"\")");
+		
+			// The container that align both containers as a row
+			var actionsContainer = document.createElement("div");
+			actionsContainer.setAttribute ("class", "ui-grid-col-2 footer");
+			actionsContainer.appendChild(favoriteContainer);
+			actionsContainer.appendChild(retweetContainer);
+		
+			// The section that wraps all the parts of the tweet
 			var tweet = document.createElement("section");
 			tweet.className = "tweet"
 			tweet.appendChild(nameElement);
 			tweet.appendChild(usernameElement);
 			tweet.appendChild(timeElement);
 			tweet.appendChild(tweetElement);
-			tweet.appendChild(div_grid)
+			tweet.appendChild(actionsContainer)
 			tweetsContainer.appendChild(tweet);
 		}
 	});
@@ -65,9 +96,9 @@ var page = document.getElementById( "hsectionchangerPage" ),
 page.addEventListener( "pagebeforeshow", function() {
 	// make SectionChanger object
 	sectionChanger = new tau.widget.SectionChanger(changer, {
-		circular: false,
+		circular: true,
 		orientation: "horizontal",
-		useBouncingEffect: true
+		scrollbar: "tab"
 	});
 });
 
@@ -75,5 +106,6 @@ page.addEventListener( "pagehide", function() {
 	// release object
 	sectionChanger.destroy();
 });
+			
 
 })();

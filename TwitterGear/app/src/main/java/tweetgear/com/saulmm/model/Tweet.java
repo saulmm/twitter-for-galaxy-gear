@@ -13,6 +13,7 @@ public class Tweet {
     private String id;
     private String text;
     private String username;
+    private String name;
     private String time;
 
     private int retweets;
@@ -34,8 +35,8 @@ public class Tweet {
         return time;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public void setText(String text) {
@@ -72,7 +73,7 @@ public class Tweet {
 
         for (Tweet tweet : homeline) {
 
-            compressedTweet += tweet.getUsername();
+            compressedTweet += tweet.name;
             compressedTweet += Tweet.SEPARATOR_FIELD;
 
             compressedTweet += tweet.getTime();
@@ -85,10 +86,34 @@ public class Tweet {
             compressedTweet += Tweet.SEPARATOR_FIELD;
             compressedTweet += tweet.getId();
 
+            compressedTweet += Tweet.SEPARATOR_FIELD;
+            compressedTweet += tweet.getRetweets();
+
+            compressedTweet += Tweet.SEPARATOR_FIELD;
+            compressedTweet += tweet.getFavorites();
+
             compressedTweet += Tweet.SEPARATOR_TWEET;
+
+
         }
 
         return compressedTweet;
     }
 
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    @Override
+    public String toString() {
+        return "Tweet{" +
+            "id='" + id + '\'' +
+            ", text='" + text + '\'' +
+            ", username='" + username + '\'' +
+            ", name='" + name + '\'' +
+            ", time='" + time + '\'' +
+            ", retweets=" + retweets +
+            ", favorites=" + favorites +
+            '}';
+    }
 }

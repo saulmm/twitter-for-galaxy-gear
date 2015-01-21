@@ -62,8 +62,8 @@ import tweetgear.com.saulmm.executor.JobExecutor;
 import tweetgear.com.saulmm.model.Tweet;
 import tweetgear.com.saulmm.use_cases.FavoriteUsecase;
 import tweetgear.com.saulmm.use_cases.FavoriteUsecaseImpl;
-import tweetgear.com.saulmm.use_cases.GetTweetsUsecase;
-import tweetgear.com.saulmm.use_cases.GetTweetsUsecaseImpl;
+import tweetgear.com.saulmm.use_cases.GetTweetsUseCase;
+import tweetgear.com.saulmm.use_cases.GetTweetsUseCaseImpl;
 import tweetgear.com.saulmm.use_cases.RetweetUsecase;
 import tweetgear.com.saulmm.use_cases.RetweetUsecaseImpl;
 import twitter4j.Twitter;
@@ -111,12 +111,11 @@ public class CommService extends SAAgent {
             if (twitterClient == null)
                 throw new IllegalStateException("The twitter client is not initialized");
 
-
             String receivedString = new String (data);
 
             if (receivedString.equals("/twitter/get_tweets")) {
 
-                GetTweetsUsecase getTweetsUsecase = new GetTweetsUsecaseImpl(twitterClient, getTweetsCallback);
+                GetTweetsUseCase getTweetsUsecase = new GetTweetsUseCaseImpl(twitterClient, getTweetsCallback);
                 JobExecutor.getInstance().execute(getTweetsUsecase);
 
             } else if (receivedString.startsWith("/twitter/retweet/")) {
@@ -319,7 +318,7 @@ public class CommService extends SAAgent {
         return true;
     }
 
-    private GetTweetsUsecase.Callback getTweetsCallback = new GetTweetsUsecase.Callback() {
+    private GetTweetsUseCase.Callback getTweetsCallback = new GetTweetsUseCase.Callback() {
 
         @Override
         public void onTweetsListLoaded(Collection<Tweet> tweetsCollection) {

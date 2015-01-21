@@ -8,7 +8,7 @@ import tweetgear.com.saulmm.model.Tweet;
 /**
  * Created by saulmm on 20/12/14.
  */
-public interface GetTweetsUsecase extends Interactor {
+public interface GetTweetsUseCase extends Interactor {
 
     interface Callback {
         void onTweetsListLoaded (Collection<Tweet> tweetsCollection);

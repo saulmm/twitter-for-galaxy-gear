@@ -8,14 +8,40 @@
 
 .tweet {
 	text-align: center;
+	padding: 10px;
 }
 
-#idle_screen {
-	
+.card {
+  	padding:1.5rem;
+  	box-shadow:0 1px 2px #aaa;
+  	background:white;
+  	margin:0 1rem 1rem;
+  	border-radius:3px;
+  	user-select:none;
+  	transform-origin:top left;
+}
+
+
+.tweet_action_container {
+	height: 76px;
+	float: left;
+	padding-left: 20px;
+}
+
+.tweet_action_img {
+	float: left;
+	height: 100%;
+	vertical-align: middle;
+}
+
+.tweet_action_text {
+	position: relative;
+	padding-right: 20px;
+	top: -25%;
 }
 
 #tweets_container {
-	background-image: url("../images/footer_lodyas.png");
+	background-image: url("../images/tw_wall_blue.png");
 
 }
 
@@ -34,8 +60,16 @@
 
 }
 
-.tweetUsername {
+img {
+	height: 30px;
 }
+
+.footer { 
+	width: 100%;
+	height: 85px;
+	bottom: 0;
+	left: 0;
+} 
 
 .tweetText {
 	margin-top: 50px;
