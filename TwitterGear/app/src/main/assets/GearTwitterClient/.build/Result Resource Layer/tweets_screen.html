@@ -23,9 +23,7 @@
 <script type="text/javascript" src="./lib/tau/wearable/js/tau.js"></script>
 
 	<script type="text/javascript">
-			
 				
-			
 			connect();
 			setConnectedCallback(function () { 
 				
@@ -33,6 +31,10 @@
 			
 			function retweet(id) {
 				var img = document.getElementById ("rt_img");
+				var txt = document.getElementById ("rt_text");
+				var retweet_count = parseInt(txt.innerHTML) +1;
+				txt.innerHTML = retweet_count;
+				
 				img.setAttribute ("src", "./images/rt_blue.png");
 				
 				fetch ("/twitter/retweet/"+id);
@@ -42,6 +44,10 @@
 			
 			function favorite (id) {
 				var img = document.getElementById ("fav_img");
+				var txt = document.getElementById ("fav_text");
+				var fav_count = parseInt(txt.innerHTML) +1;
+				txt.innerHTML = fav_count;
+				
 				img.setAttribute ("src", "./images/fav_blue.png");
 				
 				fetch ("/twitter/favorite/"+id);
