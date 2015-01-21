@@ -4,51 +4,75 @@
 <SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"></SignatureMethod>
 <Reference URI="author-signature.xml">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
-<DigestValue>mIH7mEOz+PkRba4kXlXwSoklQZczH+jpyp6nj+2rV2M=</DigestValue>
+<DigestValue>0nz8qvuhnu9FkgT/wrItvTTaFsmL5QCMThmPtq639Cw=</DigestValue>
 </Reference>
 <Reference URI="config.xml">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
-<DigestValue>/mSC+peSxdo3gTrFjtH+hPYkHS6kQVulRFJJ0MZO2bQ=</DigestValue>
+<DigestValue>25/PdvL3WltAARZ21uEyrEclo/JIaOBnV/Kt3LrwmHw=</DigestValue>
 </Reference>
-<Reference URI="css%2F_style.css">
+<Reference URI="css%2Fmain_screen.css">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
-<DigestValue>42tzHvvIFq8Cfs9mvGYIbRNqKXFHDV1kKtSbf79Epig=</DigestValue>
+<DigestValue>PRMArxHttKt/bc+/qAbjDyj0YQ1tKIVulZVKZ+vXo/Q=</DigestValue>
 </Reference>
 <Reference URI="css%2Fsectionchanger.css">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
 <DigestValue>QA0V+Pv90gRbNi/UkDzrGCgpbfHIPy1LBOPd0px2Y0c=</DigestValue>
 </Reference>
-<Reference URI="css%2Fstyle.css">
-<DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
-<DigestValue>qPMvjhx1UTaxzqI2c0A/fkRGLtMPSfdSZ/jlPemo3rA=</DigestValue>
-</Reference>
 <Reference URI="css%2Ftweets_screen.css">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
-<DigestValue>zx7zdUpwbUjQO9B0y9hZjJsvrFgeVYI2uaNOUBHRCGo=</DigestValue>
+<DigestValue>L9Zyp60ySpbaIoqYzCef6qZzdylzMQAgcwvGy2MsB24=</DigestValue>
 </Reference>
 <Reference URI="icon.png">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
-<DigestValue>vPjxjOppORd6hn9Bw4sh06gqtDoJzoFbV/8e9FyIdvk=</DigestValue>
+<DigestValue>KbV8ZmCwLdDiJPaWXPOyC0zyRXiquXx89kTgsAZXylI=</DigestValue>
+</Reference>
+<Reference URI="images%2Ffav.png">
+<DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
+<DigestValue>kZ6z4/wa/TQKZia8LWA7aQJvC3QJ7FQg51ix+DVb/Z8=</DigestValue>
+</Reference>
+<Reference URI="images%2Ffav_blue.png">
+<DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
+<DigestValue>lNlwsA4+pNGaAR37jVz3JHj0KKGDHT3CImtCZl2ajGg=</DigestValue>
 </Reference>
 <Reference URI="images%2Ffooter_lodyas.png">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
 <DigestValue>4dZDXyKjTM3NPOzVkufaZ4CiBpLmOxNgDfkjG96w0Rk=</DigestValue>
 </Reference>
-<Reference URI="images%2Ftwitter_img.png">
+<Reference URI="images%2Frt.png">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
-<DigestValue>N4onR/X8fWOinsK4h7BxWY7FPsgEJ6bCNqZ3mFu7OKM=</DigestValue>
+<DigestValue>BnBvhFW6sDSmGzvkBsjcL9Dzgu6oWjKMCm/xXiaiZJ8=</DigestValue>
+</Reference>
+<Reference URI="images%2Frt_blue.png">
+<DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
+<DigestValue>sI5njosDzc9VQUmzXTCnjUeNUfIB+uId7W3g/ZOmoS0=</DigestValue>
+</Reference>
+<Reference URI="images%2Ftw_wall.png">
+<DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
+<DigestValue>upXskJETjpQFcd9smmeoEeSm/dWhs3ecBYOsf8mfZYs=</DigestValue>
+</Reference>
+<Reference URI="images%2Ftw_wall_blue.png">
+<DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
+<DigestValue>6SnCeCj/0RHx1vgOlN33jNLITRgcRsbzem1J9Y69Eww=</DigestValue>
+</Reference>
+<Reference URI="images%2Ftw_wall_blurred.png">
+<DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
+<DigestValue>lzUSUp1HqJM2JkETDqOI/YrvGDFRrPiJkDHf0q9Ejj8=</DigestValue>
+</Reference>
+<Reference URI="images%2Ftw_wall_dark.png">
+<DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
+<DigestValue>2fLKeUypfbpWdVrogDjQ8KuSzCXwM0yKHFZp0Zm7jYU=</DigestValue>
 </Reference>
 <Reference URI="index.html">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
-<DigestValue>gqUtdn3QNE8Rq0oGlXidXs9HTdO91d6babf6/xookQE=</DigestValue>
+<DigestValue>9W1EAQOMUKLoSTrfiF5wV+1hWCUGi2RYLJsezJ2Okhg=</DigestValue>
 </Reference>
 <Reference URI="js%2Fdevice_handler.js">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
-<DigestValue>B6kXUDSRx/ygWigGaOxF4AesCAU295ig8+5le9Qhhsw=</DigestValue>
+<DigestValue>iYRFTuvXPutKIv8nXEleqvOzGyby6SEi6WEGeZW0NC4=</DigestValue>
 </Reference>
 <Reference URI="js%2Fhsection.js">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
-<DigestValue>UZB07cw6q1AhHkWfn+EwkjSCeLk/n3gQxFrAIPj5c4k=</DigestValue>
+<DigestValue>NLRYZA//Ic+6thJGcFANWnsow/E1QOQnxBeBCJIOeoM=</DigestValue>
 </Reference>
 <Reference URI="js%2Fmain.js">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
@@ -2522,9 +2546,9 @@
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
 <DigestValue>zIETi3j+J5wFGGIJs39v4n8GxCm0vl6mtZh5JWahI6c=</DigestValue>
 </Reference>
-<Reference URI="tab.html">
+<Reference URI="tweets_screen.html">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
-<DigestValue>gPseUS2zt74TI0Rl00XbY+T3ePEgyhi0KX6yOjt9L6U=</DigestValue>
+<DigestValue>tUnXgStRVCCGn0KNIHyvDKo9q09zTTsFLMx3jT68klg=</DigestValue>
 </Reference>
 <Reference URI="#prop">
 <Transforms>
@@ -2535,11 +2559,11 @@
 </Reference>
 </SignedInfo>
 <SignatureValue>
-h5Pkz/VIM4eSLZZuj+48y7znU+Qpz7CieB6gfUyyjH17xg7RYBWZwionHNxdcNPIOkDSUF3JWYgB
-gcoZSuQ3XbxEG6JPLrCdQijUvpTJq87INPg+znLd7JoWXRkLoVTHbxbSQmK80pUy3m7LzJHZ/Cvg
-tp7ykqIQvHK+Hc7AUBJYkuipE5b1Vys/C4siyzwkAED26/gDIo1WQzUPUpoXjTm4CwZ9VbHFigeC
-4FmWr7glxMtJ5XLCPH/AotZQcPxk1LRRbKpf/xrgtIQRreg/oVCIDmCeG2r+FR5M5Pqyaffp8d3V
-60lOWSMVW6h5h55MRzE1dL/wD7K32GNgYfnGcw==
+OA4rULXSKUT8AhjX0bDpDyiUpEzdRjkEpz3aEe68zILPwh07uyPUDyeo2UMx4PXY5dKk2Ou1LJqd
+EyPx2o1F/MDpLrsbbszbG+xfzyFgLZhVSaPfh24W+gZV0NA1vzcJ+ZAKPLwRHgImrMV1EZpCGKwl
+WzTMFo3yOqRd+B6l/82MDHFWmn+IaDM93jmm21b75zTIvUnTyE4/HaAANr3EXj7VmX3nWBcd0dro
+61mPdODieYcUfx650Lg6gv9/S+k2lQcWBdz0+ASAT/isIQYobZWpdW6qJSWLDFYRGWLs1UgtiW+f
+FRz9WVRhGaVmryJaGIWT3+T0+FS1z4VxyJm/qA==
 </SignatureValue>
 <KeyInfo>
 <X509Data>

@@ -1,0 +1,32 @@
+
+
+.card {
+  padding:1.5rem;
+  box-shadow:0 1px 2px #aaa;
+  background:white;
+  margin:0 1rem 1rem;
+  border-radius:3px;
+  user-select:none;
+  transform-origin:top left;
+}
+
+.loading_text {
+	color: #3A99D8;
+	font-size: 50px;
+	font-family: sans-serif;
+	margin: 0 auto;
+	text-align: center;
+}
+
+.loading_spinner {
+	width: 100px;
+	height: 100px;
+}
+
+#loading_screen {
+	margin-top: 100px;
+}
+
+#main_screen {
+	background-image: url("../images/tw_wall.png");
+}
