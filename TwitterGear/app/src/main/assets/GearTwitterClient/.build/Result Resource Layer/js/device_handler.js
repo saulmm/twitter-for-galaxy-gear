@@ -5,20 +5,18 @@ var SASocket = null;
 var CHANNELID = 104;
 var ProviderAppName = "HelloAccessoryProvider";
 var callback;
+var myCallback;
+var eCallback;
 
 function setConnectedCallback (connectedCallback) {
 	callback = connectedCallback;
 }
 
-function createHTML(log_string)
-{
-	var log = document.getElementById('resultBoard');
-	log.innerHTML = log.innerHTML + "<br> : " + log_string;
+function setErrorCallback (errorCallback) {
+	eCallback = errorCallback;
 }
 
-function onerror(err) {
-	console.log("err [" + err + "]");
-}
+
 
 
 function fetch(order) {
@@ -93,8 +91,9 @@ function onsuccess(agents) {
 	}
 }
 
-function onError (error) {
-
+function onerror (error) {
+	
+	eCallback(error);
 	console.log("err [" + err.name + "] msg[" + err.message + "]");
 }
 
@@ -108,7 +107,7 @@ function connect() {
 
 	try {
 	
-		webapis.sa.requestSAAgent(onsuccess, onError);
+		webapis.sa.requestSAAgent(onsuccess, onerror);
 	
 	} catch (err) {
 	
@@ -140,9 +139,8 @@ function onreceive(channelId, data) {
 		window.localStorage.setItem("tweets", tweets); 
 		window.location.assign("tweets_screen.html");
 	
-	} else if (data.substring(0, 4) === "__rt") {
-		
-		
+	} else if (data === "/error/not_logged") {
+		eCallback("NOT_LOGGED");
 	}
 }
 

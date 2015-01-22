@@ -108,8 +108,12 @@ public class CommService extends SAAgent {
         @Override
         public void onReceive(int channelId, byte[] data) {
 
-            if (twitterClient == null)
-                throw new IllegalStateException("The twitter client is not initialized");
+            if (twitterClient == null) {
+
+                uHandler = mConnectionsMap.get(Integer.parseInt(String.valueOf(mConnectionId)));
+                sendMessageToGear(uHandler, "/error/not_logged");
+                return;
+            }
 
             String receivedString = new String (data);
 
@@ -318,6 +322,7 @@ public class CommService extends SAAgent {
         return true;
     }
 
+    private CommServiceProviderConnection uHandler;
     private GetTweetsUseCase.Callback getTweetsCallback = new GetTweetsUseCase.Callback() {
 
         @Override
@@ -325,8 +330,7 @@ public class CommService extends SAAgent {
 
             final String compressedTweets = Tweet.getCompressedTweets(tweetsCollection);
 
-            final CommServiceProviderConnection uHandler = mConnectionsMap.get(
-                    Integer.parseInt(String.valueOf(mConnectionId)));
+             uHandler = mConnectionsMap.get(Integer.parseInt(String.valueOf(mConnectionId)));
 
             if(uHandler != null) {
 
