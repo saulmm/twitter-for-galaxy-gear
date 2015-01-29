@@ -23,3 +23,8 @@ The release [0.3](https://github.com/saulmm/twitter-for-galaxy-gear/releases), i
 
 ![](https://googledrive.com/host/0B62SZ3WRM2R2dFVlRmUwZEVfZUk)
 
+## Twitter for Galaxy Gear (0.4)
+
+The release [0.4](https://github.com/saulmm/twitter-for-galaxy-gear/releases) Is the _pre-release_ version, in this version the UI was improved, the protocol of communication with the service running on android is better thant the previous version, now the user can directly get informed about how many retweets and favorites has a tweet with a glance.
+
+![](https://googledrive.com/host/0B62SZ3WRM2R2bkRVel90OGtGbFE)
