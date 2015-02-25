@@ -344,7 +344,6 @@ public class CommService extends SAAgent {
             }
         }
 
-
         @Override
         public void onError(String error) {
 

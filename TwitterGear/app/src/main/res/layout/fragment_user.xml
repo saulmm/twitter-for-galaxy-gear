@@ -1,52 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:fbutton="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
 
+    android:id="@+id/tw_user_background"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:scaleType="centerCrop"
     >
 
     <ImageView
-        android:id="@+id/tw_user_background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:src="@drawable/background"
         android:scaleType="centerCrop"
-        android:src="@drawable/gradient_down"
-        android:background="@drawable/background"
         android:contentDescription="@string/fuser_profile_description" />
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:layout_marginBottom="@dimen/activity_vertical_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/tw_profile_img"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
         android:layout_gravity="center_horizontal"
+        android:scaleType="centerCrop"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:src="@drawable/icon"
+        app:border_width="1dp"
+        app:border_color="#FFF"
+        />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tw_profile_img"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:padding="@dimen/activity_vertical_margin"
+        android:background="#88000000"
         android:orientation="vertical"
         >
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_gravity="center_horizontal"
-            android:orientation="vertical"
-            android:layout_weight="1"
-            >
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/tw_profile_img"
-                android:layout_width="200dp"
-                android:layout_height="200dp"
-                android:layout_gravity="center_horizontal"
-                android:scaleType="centerCrop"
-                app:border_width="1dp"
-                app:border_color="#FFF"
-                />
 
             <TextView
                 android:layout_width="match_parent"
@@ -95,5 +91,24 @@
 
             </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
-</FrameLayout>
+
+    <info.hoang8f.widget.FButton
+
+        android:id="@+id/tw_login_fragment_button"
+        android:layout_width="200dp"
+        android:layout_height="64dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:textColor="#FFF"
+        android:textSize="18sp"
+        android:text="Logout"
+
+        fbutton:cornerRadius="15dp"
+        fbutton:shadowEnabled="true"
+        fbutton:buttonColor="#ffbc0b00"
+        fbutton:shadowColor="#ff770a00"
+        fbutton:shadowHeight="4dp" />
+
+
+</RelativeLayout>
