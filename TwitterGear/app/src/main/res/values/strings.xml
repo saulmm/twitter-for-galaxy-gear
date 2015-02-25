@@ -6,5 +6,6 @@
     <string name="flogin_button">Sign in with twitter</string>
     <string name="fuser_logged_text">You are logged in as...</string>
     <string name="fuser_profile_description">Your image profile</string>
+    <string name="fragment_login_error_authorization">You must be logged with twitter in order to use tweechip in your gear</string>
 
 </resources>

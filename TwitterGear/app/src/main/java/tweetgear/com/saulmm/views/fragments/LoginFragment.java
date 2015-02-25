@@ -3,7 +3,6 @@ package tweetgear.com.saulmm.views.fragments;
 import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -21,7 +20,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-
 import tweetgear.com.saulmm.helpers.TwitterHelper;
 import tweetgear.com.saulmm.helpers.TwitterLoginListener;
 import tweetgear.com.saulmm.twittergear.R;
@@ -32,14 +30,14 @@ import static android.view.View.OnClickListener;
 
 public class LoginFragment extends Fragment implements TwitterLoginListener {
 
-    // UI Stuff
+    private static final String TW_CALLBACK = "http://saulmm.com/";
+
     private Dialog authDialog;
     private Dialog waitDialog;
 
     private TextView errorMessageTv;
     private Button twitterLoginFragmentButton;
 
-    private Context ctx;
 
     // Other stuff
     private boolean authOk;
@@ -53,7 +51,12 @@ public class LoginFragment extends Fragment implements TwitterLoginListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View rootView = initUI(inflater);
+        View rootView = inflater.inflate(R.layout.fragment_login, container, false);
+
+        twitterLoginFragmentButton  = (Button) rootView.findViewById(R.id.tw_login_fragment_button);
+        errorMessageTv              = (TextView) rootView.findViewById(R.id.tw_login_error_msg);
+
+        twitterLoginFragmentButton.setOnClickListener(onClickTwitterListener);
 
         twHelper = TwitterHelper.getInstance(getActivity().getApplicationContext());
         twHelper.setLoginListener(this);
@@ -62,33 +65,21 @@ public class LoginFragment extends Fragment implements TwitterLoginListener {
         return rootView;
     }
 
-    private View initUI(LayoutInflater inflater) {
-
-        waitDialog = new Dialog(getActivity());
-        waitDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        waitDialog.setContentView(R.layout.dialog_wait);
-        waitDialog.setCancelable(false);
-
-        ImageView loadingSegment = (ImageView) waitDialog.findViewById(R.id.d_loading_img);
-        loadingSegment.startAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.loading_animation));
-
-        View rootView = inflater.inflate(R.layout.fragment_login, null); // TODO Check this
-
-        twitterLoginFragmentButton  = (Button) rootView.findViewById(R.id.tw_login_fragment_button);
-        errorMessageTv              = (TextView) rootView.findViewById(R.id.tw_login_error_msg);
-
-        twitterLoginFragmentButton.setOnClickListener(onClickTwitterListener);
-
-        return rootView;
-    }
-
-
     private final OnClickListener onClickTwitterListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
 
         errorMessageTv.setText("");
+
+        waitDialog = new Dialog(getActivity());
+        waitDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        waitDialog.setContentView(R.layout.dialog_wait);
+        waitDialog.setCancelable(false);
         waitDialog.show();
+
+        ImageView loadingSegment = (ImageView) waitDialog.findViewById(R.id.d_loading_img);
+        loadingSegment.startAnimation(AnimationUtils.loadAnimation(
+            getActivity(), R.anim.loading_animation));
 
         twHelper.setLoginListener(LoginFragment.this);
         twHelper.requestAuthorizationUrl();
@@ -101,9 +92,8 @@ public class LoginFragment extends Fragment implements TwitterLoginListener {
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             super.onPageStarted(view, url, favicon);
 
-            Log.d("[DEBUG] GetTokenTask - onPageStarted", "Loading URL: " + url);
+            if (url.startsWith(TW_CALLBACK)) {
 
-            if (url.startsWith("http://saulmm.com/")) {
                 authDialog.dismiss();
                 authOk = true;
                 waitDialog.show();
@@ -120,12 +110,15 @@ public class LoginFragment extends Fragment implements TwitterLoginListener {
                 Uri uri = Uri.parse(url);
                 String oauthVerifier = uri.getQueryParameter("oauth_verifier");
 
+
                 twHelper.setOauthVerifier(oauthVerifier);
                 twHelper.requestAccessToken();
 
 
             } else if (url.contains("denied")) {
-                Log.e("[ERROR] GetTokenTask - onPageFinished", "[ERROR] Denied");
+
+                Log.e("[ERROR]", "LoginFragment, onPageFinished (126)- " +
+                    "Error denied");
             }
         }
     };
@@ -135,15 +128,15 @@ public class LoginFragment extends Fragment implements TwitterLoginListener {
         @Override
         public void onDismiss(DialogInterface dialog) {
 
-            // The user dismissed the dialog
-            if (!authOk) {
+        if (!authOk) {
 
-                // Reinitialize the twitter client
-                twHelper.initTwitter();
-                waitDialog.dismiss();
-                String errorMsg = "You must be logged in to use twitter in android wear"; // TODO Hardcoded string
-                showButtonError(errorMsg);
-            }
+            twHelper.initTwitter();
+            waitDialog.dismiss();
+            String errorMsg = getActivity().getString(
+                R.string.fragment_login_error_authorization);
+
+            showButtonError(errorMsg);
+        }
         }
     };
 
@@ -152,12 +145,14 @@ public class LoginFragment extends Fragment implements TwitterLoginListener {
     public void onAuthorizationURLReceived(String url) {
 
         if (url != null) {
+
             authDialog = new Dialog(getActivity(), android.R.style.Theme_Light_NoTitleBar_Fullscreen);
             authDialog.setOnDismissListener(onDismissDialogListener);
             authDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             authDialog.setContentView(R.layout.dialog_twitter_authorization);
 
             WebView webview = (WebView) authDialog.findViewById(R.id.webv);
+            android.webkit.CookieManager.getInstance().removeAllCookie();
 
             webview.getSettings().setJavaScriptEnabled(true);
             webview.loadUrl("file://android_asset/index.html");
@@ -168,16 +163,18 @@ public class LoginFragment extends Fragment implements TwitterLoginListener {
             authDialog.setCancelable(true);
 
         } else {
-            Log.e("[ERROR] LoginFragment - onAuthorizationURLReceived", "Network Error or Invalid Credentials");
-//            twitterLoginFragmentButton.setProgress(-1);
 
+            Log.e("[ERROR]", "LoginFragment, onAuthorizationURLReceived (176)- " +
+                "Network error or invalid credentials");
         }
     }
 
     @Override
     public void onAuthorizationURLFailed(String cause) {
+
         if (cause.equals ("401")) {
-            String errorMsg = "Invalid twitter api keys"; // TODO harcoded string
+
+            String errorMsg = "Invalid twitter api keys";
             showButtonError (errorMsg);
         }
     }
@@ -185,13 +182,11 @@ public class LoginFragment extends Fragment implements TwitterLoginListener {
     private void showButtonError(String errorMsg) {
 
         errorMessageTv.setText (errorMsg);
-//        twitterLoginFragmentButton.setProgress(-1);
         twitterLoginFragmentButton.setOnClickListener(null);
 
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-//            twitterLoginFragmentButton.setProgress(0);
             twitterLoginFragmentButton.setOnClickListener(onClickTwitterListener);
 
             }
@@ -215,7 +210,6 @@ public class LoginFragment extends Fragment implements TwitterLoginListener {
     @Override
     public void onRequestTokenReceived(RequestToken rToken) {
 
-        // I know that this is not the best way to save the request token
         twHelper.setRequestToken (rToken);
     }
 }
