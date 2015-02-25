@@ -51,7 +51,6 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
                 android:fontFamily="sans-serif-thin"
                 android:textColor="#FFF"
                 android:textSize="20sp"
@@ -63,7 +62,6 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/activity_vertical_margin"
                 android:orientation="horizontal"
@@ -75,7 +73,6 @@
                     android:id="@+id/tw_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
                     tools:text="Saúl M."
                     android:fontFamily="sans-serif-condensed"
                     android:textColor="@color/tw_color_3"
@@ -87,7 +84,6 @@
                     android:id="@+id/tw_username"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
                     android:layout_marginLeft="16dp"
                     android:layout_gravity="center_vertical"
                     android:textColor="@color/tw_color_1"

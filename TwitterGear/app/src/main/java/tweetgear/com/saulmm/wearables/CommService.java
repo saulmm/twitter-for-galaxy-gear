@@ -310,6 +310,7 @@ public class CommService extends SAAgent {
             public void run() {
 
                 try {
+                    Log.d("[DEBUG]", "CommService run - Message: "+message);
                     connectionHandler.send(HELLOACCESSORY_CHANNEL_ID, message.getBytes());
 
                 } catch (IOException e) {
