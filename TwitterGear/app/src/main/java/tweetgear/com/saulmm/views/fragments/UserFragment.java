@@ -26,11 +26,11 @@ import tweetgear.com.saulmm.views.view.UserView;
 
 public class UserFragment extends Fragment implements UserView, View.OnClickListener {
 
-    private ImageView profileImg;
-    private ImageView userBackground;
-    private TextView nameTv;
-    private TextView usernameTv;
-    private FButton logoutButton;
+    private ImageView mProfileImg;
+    private ImageView mUserBackground;
+    private TextView mNametextView;
+    private TextView mUsernameTextView;
+    private FButton mLogoutButton;
 
     private UserPresenter userPresenter;
 
@@ -62,13 +62,13 @@ public class UserFragment extends Fragment implements UserView, View.OnClickList
 
         View rootView = inflater.inflate(R.layout.fragment_user, null);
 
-        nameTv              = (TextView) rootView.findViewById (R.id.fragment_user_user_name);
-        usernameTv          = (TextView) rootView.findViewById (R.id.fragment_user_twitter_username);
-        profileImg          = (ImageView) rootView.findViewById (R.id.fragment_user_avatar);
-        userBackground      = (ImageView) rootView.findViewById (R.id.fragment_user_background);
-        logoutButton        = (FButton) rootView.findViewById (R.id.fragment_user_logout_button);
+        mNametextView = (TextView) rootView.findViewById (R.id.fragment_user_user_name);
+        mUsernameTextView = (TextView) rootView.findViewById (R.id.fragment_user_twitter_username);
+        mProfileImg = (ImageView) rootView.findViewById (R.id.fragment_user_avatar);
+        mUserBackground = (ImageView) rootView.findViewById (R.id.fragment_user_background);
+        mLogoutButton = (FButton) rootView.findViewById (R.id.fragment_user_logout_button);
 
-        logoutButton.setOnClickListener(this);
+        mLogoutButton.setOnClickListener(this);
 
         return rootView;
     }
@@ -76,8 +76,8 @@ public class UserFragment extends Fragment implements UserView, View.OnClickList
     @Override
     public void setNameAndUserName(String name, String username) {
 
-        nameTv.setText (name);
-        usernameTv.setText (username);
+        mNametextView.setText(name);
+        mUsernameTextView.setText(username);
     }
 
     @Override
@@ -86,7 +86,7 @@ public class UserFragment extends Fragment implements UserView, View.OnClickList
         Picasso.with(getActivity())
             .load(url)
             .placeholder(R.drawable.background)
-            .into(userBackground);
+            .into(mUserBackground);
     }
 
     @Override
@@ -96,7 +96,7 @@ public class UserFragment extends Fragment implements UserView, View.OnClickList
             .load(url)
             .placeholder(R.drawable.placeholder_user)
             .error(R.drawable.background)
-            .into(profileImg);
+            .into(mProfileImg);
     }
 
     @Override
@@ -109,7 +109,7 @@ public class UserFragment extends Fragment implements UserView, View.OnClickList
 
         new AlertDialog.Builder(getActivity())
             .setTitle("Logout")
-            .setMessage("Are you sure?\nYour data will be erased and the application will be restarted")
+            .setMessage(getActivity().getString(R.string.fragment_user_logout_message))
             .setPositiveButton("Accept", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -120,7 +120,6 @@ public class UserFragment extends Fragment implements UserView, View.OnClickList
                         Constants.PREFS, Context.MODE_PRIVATE);
 
                     preferences.edit().clear().apply();
-
 
                     Intent intent = new Intent(getActivity(), MainActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
