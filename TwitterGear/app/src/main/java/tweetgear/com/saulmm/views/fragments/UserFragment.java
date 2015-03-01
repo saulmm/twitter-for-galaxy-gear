@@ -16,7 +16,6 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import info.hoang8f.widget.FButton;
-import tweetgear.com.saulmm.helpers.TwitterHelper;
 import tweetgear.com.saulmm.presenter.UserPresenter;
 import tweetgear.com.saulmm.presenter.UserPresenterImpl;
 import tweetgear.com.saulmm.twittergear.R;
@@ -63,10 +62,10 @@ public class UserFragment extends Fragment implements UserView, View.OnClickList
 
         View rootView = inflater.inflate(R.layout.fragment_user, null);
 
-        nameTv              = (TextView) rootView.findViewById (R.id.tw_name);
-        usernameTv          = (TextView) rootView.findViewById (R.id.tw_username);
-        profileImg          = (ImageView) rootView.findViewById (R.id.tw_profile_img);
-        userBackground      = (ImageView) rootView.findViewById (R.id.tw_user_background);
+        nameTv              = (TextView) rootView.findViewById (R.id.fragment_user_user_name);
+        usernameTv          = (TextView) rootView.findViewById (R.id.fragment_user_twitter_username);
+        profileImg          = (ImageView) rootView.findViewById (R.id.fragment_user_avatar);
+        userBackground      = (ImageView) rootView.findViewById (R.id.fragment_user_background);
         logoutButton        = (FButton) rootView.findViewById (R.id.fragment_user_logout_button);
 
         logoutButton.setOnClickListener(this);

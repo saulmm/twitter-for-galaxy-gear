@@ -12,7 +12,7 @@
     >
 
     <ImageView
-        android:id="@+id/tw_user_background"
+        android:id="@+id/fragment_user_background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:src="@drawable/background"
@@ -20,7 +20,7 @@
         android:contentDescription="@string/fuser_profile_description" />
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/tw_profile_img"
+        android:id="@+id/fragment_user_avatar"
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:layout_gravity="center_horizontal"
@@ -35,7 +35,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tw_profile_img"
+        android:layout_below="@+id/fragment_user_avatar"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:padding="@dimen/activity_vertical_margin"
@@ -64,7 +64,7 @@
                 >
 
                 <TextView
-                    android:id="@+id/tw_name"
+                    android:id="@+id/fragment_user_user_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     tools:text="Saúl M."
@@ -75,7 +75,7 @@
                     />
 
                 <TextView
-                    android:id="@+id/tw_username"
+                    android:id="@+id/fragment_user_twitter_username"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
@@ -83,11 +83,25 @@
                     android:textColor="@color/tw_color_1"
                     android:textSize="20sp"
                     android:fontFamily="sans-serif-light"
-
                     tools:text="saulmm"
                     />
             </LinearLayout>
-        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-thin"
+            android:textColor="#ffd2d2d2"
+            android:textSize="20sp"
+            android:gravity="center"
+            android:padding="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+
+            android:text="Now you can check your timeline from your Gear device"
+            />
+
+
+    </LinearLayout>
 
     <info.hoang8f.widget.FButton
         android:id="@+id/fragment_user_logout_button"

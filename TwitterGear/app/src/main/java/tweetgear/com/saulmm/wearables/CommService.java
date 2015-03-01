@@ -75,13 +75,14 @@ public class CommService extends SAAgent {
     public static final int HELLOACCESSORY_CHANNEL_ID = 104;
     private HashMap<Integer, CommServiceProviderConnection> mConnectionsMap;
 
-    private Twitter twitterClient;
+    private CommServiceProviderConnection mConnectionHandler;
+    private Twitter mTwitterClient;
     private IBinder mBinder;
     private int mConnectionId;
 
     public void setTwitterClient(Twitter twitterClient) {
 
-        this.twitterClient = twitterClient;
+        mTwitterClient = twitterClient;
     }
 
     public class LocalBinder extends Binder {
@@ -108,10 +109,10 @@ public class CommService extends SAAgent {
         @Override
         public void onReceive(int channelId, byte[] data) {
 
-            if (twitterClient == null) {
+            if (mTwitterClient == null) {
 
-                uHandler = mConnectionsMap.get(Integer.parseInt(String.valueOf(mConnectionId)));
-                sendMessageToGear(uHandler, "/error/not_logged");
+                mConnectionHandler = mConnectionsMap.get(Integer.parseInt(String.valueOf(mConnectionId)));
+                sendMessageToGear(mConnectionHandler, "/error/not_logged");
                 return;
             }
 
@@ -119,22 +120,19 @@ public class CommService extends SAAgent {
 
             if (receivedString.equals("/twitter/get_tweets")) {
 
-                GetTweetsUseCase getTweetsUsecase = new GetTweetsUseCaseImpl(twitterClient, getTweetsCallback);
+                GetTweetsUseCase getTweetsUsecase = new GetTweetsUseCaseImpl(mTwitterClient, mGetTweetsCallback);
                 JobExecutor.getInstance().execute(getTweetsUsecase);
 
             } else if (receivedString.startsWith("/twitter/retweet/")) {
 
-                Log.d("[DEBUG]", "CommServiceProviderConnection onReceive - ");
                 String tweetID = receivedString.split("/")[3];
-                Log.d("[DEBUG]", "CommServiceProviderConnection onReceive - Tweet ID "+tweetID);
-                RetweetUsecase retweetUsecase = new RetweetUsecaseImpl(twitterClient, tweetID, retweetCallback);
+                RetweetUsecase retweetUsecase = new RetweetUsecaseImpl(mTwitterClient, tweetID, retweetCallback);
                 JobExecutor.getInstance().execute(retweetUsecase);
 
             } else if (receivedString.startsWith("/twitter/favorite/")) {
 
-                Log.d("[DEBUG]", "CommServiceProviderConnection onReceive - ");
                 String tweetID = receivedString.split("/")[3];
-                FavoriteUsecase favoriteUsecase = new FavoriteUsecaseImpl(twitterClient, tweetID, favoriteCallback);
+                FavoriteUsecase favoriteUsecase = new FavoriteUsecaseImpl(mTwitterClient, tweetID, favoriteCallback);
                 JobExecutor.getInstance().execute(favoriteUsecase);
             }
         }
@@ -143,9 +141,6 @@ public class CommService extends SAAgent {
         protected void onServiceConnectionLost(int errorCode) {
 
             if (mConnectionsMap != null) {
-
-                Log.d("[DEBUG]", "HelloAccessoryProviderConnection onServiceConnectionLost -" +
-                        " Connection lost: "+errorCode);
 
                 mConnectionsMap.remove(mConnectionId);
             }
@@ -194,7 +189,7 @@ public class CommService extends SAAgent {
                 CommServiceProviderConnection myConnection = (CommServiceProviderConnection) thisConnection;
 
                 if (mConnectionsMap == null)
-                    mConnectionsMap = new HashMap<Integer, CommServiceProviderConnection>();
+                    mConnectionsMap = new HashMap<>();
 
                 mConnectionId = (int) (System.currentTimeMillis() & 255);
                 mConnectionsMap.put(mConnectionId, myConnection);
@@ -315,28 +310,30 @@ public class CommService extends SAAgent {
 
                 } catch (IOException e) {
                     e.printStackTrace();
+                    
+                    Log.e("[ERROR]", "CommService, run (313)- " +
+                        "IOException: "+e.getMessage());
                 }
             }
         }).start();
 
-
         return true;
     }
 
-    private CommServiceProviderConnection uHandler;
-    private GetTweetsUseCase.Callback getTweetsCallback = new GetTweetsUseCase.Callback() {
+    
+    private GetTweetsUseCase.Callback mGetTweetsCallback = new GetTweetsUseCase.Callback() {
 
         @Override
         public void onTweetsListLoaded(Collection<Tweet> tweetsCollection) {
 
             final String compressedTweets = Tweet.getCompressedTweets(tweetsCollection);
 
-             uHandler = mConnectionsMap.get(Integer.parseInt(String.valueOf(mConnectionId)));
+             mConnectionHandler = mConnectionsMap.get(Integer.parseInt(String.valueOf(mConnectionId)));
 
-            if(uHandler != null) {
+            if(mConnectionHandler != null) {
 
                 String order = "__tw";
-                sendMessageToGear(uHandler, order + "|=|"+ compressedTweets);
+                sendMessageToGear(mConnectionHandler, order + "|=|"+ compressedTweets);
 
             } else {
 
@@ -369,14 +366,15 @@ public class CommService extends SAAgent {
         @Override
         public void onFavoriteSuccess() {
 
-            Log.d("[DEBUG]", "CommService onFavoriteSuccess - Success");
+            Log.e("[ERROR]", "CommService, onFavoriteSuccess (369)- " +
+                "Favorite success");
         }
 
         @Override
         public void onFavoriteError() {
 
-            Log.e("[ERROR]", "CommService onFavoriteError - Favorite error");
-
+            Log.e("[ERROR]", "CommService, onFavoriteError (375)- " +
+                "Error on favorite");
         }
     };
 }
