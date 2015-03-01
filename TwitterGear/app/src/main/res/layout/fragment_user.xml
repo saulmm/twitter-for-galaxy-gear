@@ -15,7 +15,7 @@
         android:id="@+id/fragment_user_background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/background"
+        android:src="@drawable/gradient_login_background"
         android:scaleType="centerCrop"
         android:contentDescription="@string/fuser_profile_description" />
 
