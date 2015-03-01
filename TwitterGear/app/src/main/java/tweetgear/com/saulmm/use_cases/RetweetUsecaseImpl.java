@@ -1,15 +1,11 @@
 package tweetgear.com.saulmm.use_cases;
 
-import java.util.ArrayList;
+import android.util.Log;
 
 import tweetgear.com.saulmm.executor.JobExecutor;
 import tweetgear.com.saulmm.executor.PostExecutionThread;
 import tweetgear.com.saulmm.executor.ThreadExecutor;
 import tweetgear.com.saulmm.executor.UIThread;
-import tweetgear.com.saulmm.model.Tweet;
-import tweetgear.com.saulmm.utils.Utils;
-import twitter4j.ResponseList;
-import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 
@@ -55,6 +51,8 @@ public class RetweetUsecaseImpl implements RetweetUsecase {
 
     @Override
     public void run() {
+
+        Log.d("[DEBUG]", "RetweetUsecaseImpl run - ");
 
         try {
 
